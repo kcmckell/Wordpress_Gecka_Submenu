@@ -85,3 +85,47 @@ class Gecka_Submenu {
         return $item_output;
     }
 }
+
+if(!class_exists('Walker_Nav_Menu_DropDown')) {
+    
+    class Walker_Nav_Menu_DropDown extends Walker {
+        /**
+         * @see Walker::$tree_type
+         * @since 3.0.0
+         * @var string
+         */
+        var $tree_type = array( 'post_type', 'taxonomy', 'custom' );
+
+        /**
+         * @see Walker::$db_fields
+         * @since 3.0.0
+         * @todo Decouple this.
+         * @var array
+         */
+        var $db_fields = array( 'parent' => 'menu_item_parent', 'id' => 'db_id' );
+
+           /**
+         * @see Walker::start_el()
+         * @since 3.0.0
+         *
+         * @param string $output Passed by reference. Used to append additional content.
+         * @param object $item Menu item data object.
+         * @param int $depth Depth of menu item. Used for padding.
+         * @param int $current_page Menu item ID.
+         * @param object $args
+         */
+        function start_el(&$output, $item, $depth, $args) {
+        	
+            global $wp_query;
+            $pad = str_repeat('&nbsp;', $depth * 3);
+            
+            $output .= "\t<option class=\"level-$depth\" value=\"".esc_attr($item->ID)."\"";
+            if ( (int)$item->ID === (int)$args['selected'] )
+                $output .= ' selected="selected"';
+            $output .= '>';
+            $output .= esc_html($pad . apply_filters( 'the_title', $item->title, $item->term_id ));
+
+            $output .= "</option>\n";
+        }
+    }
+}
