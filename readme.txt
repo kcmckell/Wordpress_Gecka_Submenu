@@ -1,4 +1,5 @@
 === Plugin Name ===
+Contributors: Laurent Dinclaux
 Tags: nav menu, 3.0, submenu, sub-menu, child, child menu
 Requires at least: 3.0
 Tested up to: 3.0
