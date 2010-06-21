@@ -3,7 +3,7 @@ Contributors: Laurent Dinclaux
 Tags: nav menu, 3.0, submenu, sub-menu, child, child menu
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.2
+Stable tag: 0.2.2
 
 Provides submenu and autosubmenu widgets for the new wordpress 3.0 menu system.
 
