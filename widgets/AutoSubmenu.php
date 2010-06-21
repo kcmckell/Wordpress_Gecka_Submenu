@@ -33,7 +33,7 @@ class GKSM_Widget_autosubmenu extends WP_Widget {
             
             global $GKSM_ID, $GKSM_MENUID;
 			$GKSM_ID = $Ancestor->ID; $GKSM_MENUID = $menu;
-            $out = wp_nav_menu( array( 'fallback_cb'=>'', 'echo'=>false, 'show_description'=> $show_description, "depth"=>$depth ) );
+            $out = wp_nav_menu( array( 'menu'=> $menu, 'fallback_cb'=>'', 'echo'=>false, 'show_description'=> $show_description, "depth"=>$depth ) );
             $GKSM_ID = $GKSM_MENUID = null;
 			
             if($out) {
@@ -135,12 +135,12 @@ class GKSM_Widget_autosubmenu extends WP_Widget {
         
         $MenuItems = wp_get_nav_menu_items($menu);
         $AssociatedMenuItems = wp_get_associated_nav_menu_items( $postID );
-
+        
         foreach($AssociatedMenuItems as $associated) {
         	$Item = $this->getMenuItem($associated, &$MenuItems);
         	if($Item) break;
         }
-       
+
         if( ! $Item ) return;
         
         $Ancestror = $Item;

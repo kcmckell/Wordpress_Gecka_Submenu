@@ -35,7 +35,7 @@ class GKSM_Widget_Submenu extends WP_Widget {
             
             global $GKSM_ID, $GKSM_MENUID;
 			$GKSM_ID = $submenu; $GKSM_MENUID = $menu;
-            $out = wp_nav_menu( array( 'fallback_cb'=>'', 'echo'=>false, 'show_description'=> $show_description, "depth"=>$depth) );
+            $out = wp_nav_menu( array( 'menu'=> $menu, 'fallback_cb'=>'', 'echo'=>false, 'show_description'=> $show_description, "depth"=>$depth) );
             $GKSM_ID = $GKSM_MENUID = null;
 			
             if($out) {
