@@ -6,11 +6,26 @@ Description: Provide submenu and autosubmenu widgets for the new wordpress 3.0 m
 Version: 0.2
 Author: Laurent Dinclaux
 Author URI: http://gecka.nc
+License: GPL2
 */
 
 /* 
-Copyright 2010  Gecka SARL (email: contact@gecka.nc)
+Copyright 2010 Gecka SARL (email: contact@gecka.nc). All rights reserved.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License, version 2, as 
+    published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
 
 define('GKSM_PATH' , WP_PLUGIN_DIR . "/" . plugin_basename(dirname(__FILE__)) );
 // define('GKSM_URL'  , WP_PLUGIN_URL . "/" . plugin_basename(dirname(__FILE__)) );
