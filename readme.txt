@@ -1,5 +1,5 @@
 === Plugin Name ===
-Tags: nav menu, 3.0
+Tags: nav menu, 3.0, submenu, sub-menu, child, child menu
 Requires at least: 3.0
 Tested up to: 3.0
 Stable tag: 0.2
