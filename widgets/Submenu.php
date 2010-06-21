@@ -124,13 +124,13 @@ class GKSM_Widget_Submenu extends WP_Widget {
             </p>
 
             <p><input class="checkbox" type="checkbox" <?php checked($instance['auto_title'], true) ?> id="<?php echo $this->get_field_id('auto_title'); ?>" name="<?php echo $this->get_field_name('auto_title'); ?>" />
-            <label for="<?php echo $this->get_field_id('auto_title'); ?>"><?php _e('Use parent item title', Gecka_Submenu::Domain); ?></label><br />
+            <label for="<?php echo $this->get_field_id('auto_title'); ?>"><?php _e('Use top parent item title', Gecka_Submenu::Domain); ?></label><br />
             </p>
             
             <p><label for="<?php echo $this->get_field_id('menu'); ?>"><?php _e('Select Menu:'); ?></label>
             <select id="<?php echo $this->get_field_id('menu'); ?>" name="<?php echo $this->get_field_name('menu'); ?>" onchange="gksm_update_menu_items(this);" >
             <?php 
-            echo '<option value="">Séléctionnez</option>';
+            echo '<option value="">' . __('Select') . '</option>';
             
            
             foreach ( $menus as $_menu ) {
@@ -141,10 +141,10 @@ class GKSM_Widget_Submenu extends WP_Widget {
             ?>
             </select></p>
             
-            <p><label for="<?php echo $this->get_field_id('submenu'); ?>"><?php _e('Select Sub-Menu:'); ?></label>
+            <p><label for="<?php echo $this->get_field_id('submenu'); ?>"><?php _e('Select Sub-Menu:', Gecka_Submenu::Domain); ?></label>
             <select id="<?php echo $this->get_field_id('submenu'); ?>" name="<?php echo $this->get_field_name('submenu'); ?>" >
             
-            <?php if(!sizeof($instance)) echo '<option'. $selected .' value="'. $_menu->term_id .'">Cliquez enregister</option>';
+            <?php if(!sizeof($instance)) echo '<option'. $selected .' value="'. $_menu->term_id .'">'.__('Click save first', Gecka_Submenu::Domain).'</option>';
             else 
             echo $this->menu_items_options ($menu, $submenu)
             ?>
@@ -178,7 +178,7 @@ class GKSM_Widget_Submenu extends WP_Widget {
     	check_ajax_referer('gksm-ajax');
     	
         $id = isset($_POST['ID'])? (int)$_POST['ID'] : null;
-        if(!$id) die('<option>Sélectionnez un menu ci-dessus</option>');
+        if(!$id) die('<option>' . __('First select a nav menu', Gecka_Submenu::Domain) .'</option>');
         echo $this->menu_items_options($id);
         
         die();
@@ -187,14 +187,14 @@ class GKSM_Widget_Submenu extends WP_Widget {
 
     public function menu_items_options ($id, $default='') {
     	
-    	if(!$id) return '<option>Sélectionnez un menu ci-dessus</option>';
+    	if(!$id) return '<option>' . __('First select a nav menu', Gecka_Submenu::Domain) .'</option>';
     	
         // Get the nav menu based on the requested menu
         $menu = wp_get_nav_menu_object( $id );
         
         if ( $menu && ! is_wp_error($menu) && !isset($menu_items) )
             $menu_items = wp_get_nav_menu_items( $menu->term_id );
-        else return '<option>Menu inconnu</option>';
+        else return '<option>' . __('Error: Unknow menu.', Gecka_Submenu::Domain) .'</option>';
         
         $walker = new Walker_Nav_Menu_DropDown;
         

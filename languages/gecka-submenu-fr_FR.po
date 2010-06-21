@@ -1,0 +1,86 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Gecka Sub-Menu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-22 09:07+1100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: lox <lox@knc.nc>\n"
+"Language-Team: Gecka <contact@gecka.nc>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../widgets/AutoSubmenu.php:12
+msgid "Automatically shows a sub-menu starting from the ancestor menu item of the currently viewed page. "
+msgstr "Affiche automatiquement un sous-menu en commençant par l'élément de menu de premier niveau de la page en cours."
+
+#: ../widgets/AutoSubmenu.php:13
+msgid "Auto Sub-menu"
+msgstr "Sous-menu automatique"
+
+#: ../widgets/AutoSubmenu.php:92
+#: ../widgets/Submenu.php:98
+#, php-format
+msgid "No menus have been created yet. <a href=\"%s\">Create some</a>."
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:97
+#: ../widgets/Submenu.php:122
+msgid "Title:"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:101
+#: ../widgets/Submenu.php:127
+msgid "Use top parent item title"
+msgstr "Utiliser le titre du menu de premier niveau"
+
+#: ../widgets/AutoSubmenu.php:104
+#: ../widgets/Submenu.php:130
+msgid "Select Menu:"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:107
+#: ../widgets/Submenu.php:133
+msgid "Select"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:115
+#: ../widgets/Submenu.php:153
+msgid "Depth:"
+msgstr "Profondeur:"
+
+#: ../widgets/AutoSubmenu.php:121
+#: ../widgets/Submenu.php:159
+msgid "Show parent item"
+msgstr "Afficher l'élément parent"
+
+#: ../widgets/AutoSubmenu.php:125
+#: ../widgets/Submenu.php:162
+msgid "Show description"
+msgstr "Afficher la description"
+
+#: ../widgets/Submenu.php:12
+msgid "Displays a Sub-Menu"
+msgstr "Affiche un sous-menu"
+
+#: ../widgets/Submenu.php:13
+msgid "Sub-menu"
+msgstr "Sous-menu"
+
+#: ../widgets/Submenu.php:144
+msgid "Select Sub-Menu:"
+msgstr "Sélèctionner l'élément parent"
+
+#: ../widgets/Submenu.php:147
+msgid "Click save first"
+msgstr "Cliquez enregistrer"
+
+#: ../widgets/Submenu.php:181
+#: ../widgets/Submenu.php:190
+msgid "First select a nav menu"
+msgstr "Sélectionner un menu ci-dessus"
+
+#: ../widgets/Submenu.php:197
+msgid "Error: Unknow menu."
+msgstr "Erreur: menu inconnu"
+

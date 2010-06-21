@@ -1,12 +1,20 @@
 <?php
 
+/**
+ * Main Plugin class
+ * @author lox
+ *
+ */
 class Gecka_Submenu {
 	
 	const Domain = 'gecka-submenu';
 	
+	/**
+	 * Constructor
+	 */
 	public function Gecka_Submenu() {
-		
-		load_plugin_textdomain(self::Domain, 'languages');
+
+		load_plugin_textdomain(self::Domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages');
 		
 		// load widgets
 		add_action('widgets_init', array($this, 'widgetsInit') );
@@ -16,6 +24,9 @@ class Gecka_Submenu {
     
 	}
 	
+	/**
+	 * Init widgets
+	 */
     public function widgetsInit () {
 
         // Check for the required plugin functions. This will prevent fatal
@@ -86,7 +97,7 @@ class Gecka_Submenu {
     }
 }
 
-if(!class_exists('Walker_Nav_Menu_DropDown')) {
+if(!class_exists('Walker_Nav_Menu_DropDown') && is_admin() ) {
     
     class Walker_Nav_Menu_DropDown extends Walker {
         /**
