@@ -12,16 +12,24 @@ class Gecka_Submenu {
 	/**
 	 * Constructor
 	 */
-	public function Gecka_Submenu() {
+	public function __construct() {
 
 		load_plugin_textdomain(self::Domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages');
 		
 		// load widgets
 		add_action('widgets_init', array($this, 'widgetsInit') );
 		
+		// filter to show portions of nav menus
 	    add_filter('wp_get_nav_menu_items', array($this, 'wp_get_nav_menu_items' ), 10, 3);
+	    
+	    // filter to show the description of menu items if asked
         add_filter('walker_nav_menu_start_el', array($this, 'walker_nav_menu_start_el'), 10, 4);
     
+		if( !is_admin() )  {
+			require_once  GKSM_PATH . '/models/Shortcodes.php';
+			new Gecka_Submenu_Shortcodes();
+		}
+        
 	}
 	
 	/**
@@ -97,6 +105,9 @@ class Gecka_Submenu {
     }
 }
 
+/**
+ * Walker to show menu items as a select box, used by widgets
+ */
 if(!class_exists('Walker_Nav_Menu_DropDown') && is_admin() ) {
     
     class Walker_Nav_Menu_DropDown extends Walker {

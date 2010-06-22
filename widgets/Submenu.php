@@ -14,55 +14,15 @@ class GKSM_Widget_Submenu extends WP_Widget {
 	    add_action('wp_ajax_gksm_update', array($this, 'submenuOptionsAjax'));
     }
     
-	public function widget($args, $instance) { 
-		
-		extract($args, EXTR_SKIP);
+    public function widget($args, $instance) {
 
-		// we get the primary menu
-		if(!$instance['menu'] || !is_nav_menu($instance['menu'])) return;
-		$menu = $instance['menu'];
-		
-		// we get the primary menu
-        if(!$instance['submenu'] || !is_nav_menu_item($instance['submenu'])) return;
-        $submenu = $instance['submenu'];
-		
-		if($submenu) {
-			
-			$auto_title = isset($instance['auto_title']) && $instance['auto_title'] ? true : false;
-            $depth = isset( $instance['depth'] ) && (int)$instance['depth']  ? $instance['depth'] : 0;
-            $show_parent = isset( $instance['show_parent'] ) && $instance['show_parent']  ? true : false;
-            $show_description = isset( $instance['show_description'] ) && (int)$instance['show_description']  ? $instance['show_description'] : 0;
-            
-            global $GKSM_ID, $GKSM_MENUID;
-			$GKSM_ID = $submenu; $GKSM_MENUID = $menu;
-            $out = wp_nav_menu( array( 'menu'=> $menu, 'fallback_cb'=>'', 'echo'=>false, 'show_description'=> $show_description, "depth"=>$depth) );
-            $GKSM_ID = $GKSM_MENUID = null;
-			
-            if($out) {
-	            
-            	$title = '';
-                if( $auto_title ) {
-                	$MenuItems = wp_get_nav_menu_items($menu);
-                	$_item = $this->getMenuItem ($submenu, &$MenuItems);
-                    $title = $_item->title;
-                }
-                else $title = $instance['title'];
-            	
-                $title = apply_filters('widget_title', $title, $instance, $this->id_base);
-                
-            	echo $before_widget; 
-				
-	            if($title) {
-	            	echo $before_title . apply_filters('widget_title', $title, $instance, $this->id_base) . $after_title;
-	            }
-	            
-	            echo $out;           
-	            
-				echo $after_widget;
-				
-			}
-		}
-	}
+    	extract($args, EXTR_SKIP);
+
+    	$Menu = new Gecka_Submenu_Submenu($instance);
+
+    	$Menu->Widget($args, $instance);
+
+    }
     
     public function update( $new_instance, $old_instance ) {
         $new_instance = (array) $new_instance;
@@ -98,7 +58,7 @@ class GKSM_Widget_Submenu extends WP_Widget {
             echo '<p>'. sprintf( __('No menus have been created yet. <a href="%s">Create some</a>.'), admin_url('nav-menus.php') ) .'</p>';
             return;
         }
-        
+   
         ?>
             <script language="javascript" type="text/javascript">
 				
@@ -107,8 +67,7 @@ class GKSM_Widget_Submenu extends WP_Widget {
 					var data = {
 				            action: 'gksm_update',
 				            ID: elem.value,
-				            _ajax_nonce: '<?php echo wp_create_nonce('gksm-ajax'); ?>'
-				        };
+				            _ajax_nonce: '<?php echo wp_create_nonce('gksm-ajax'); ?>' };
 				
 				        // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
 				        jQuery.post(ajaxurl, data, function(response) {

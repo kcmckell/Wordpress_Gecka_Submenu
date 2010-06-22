@@ -17,47 +17,11 @@ class GKSM_Widget_autosubmenu extends WP_Widget {
 		
 		extract($args, EXTR_SKIP);
 
-		// we get the primary menu
-		if(!$instance['menu'] || !is_nav_menu($instance['menu'])) return;
-		$menu = $instance['menu'];
+		$instance['auto'] = true;
 		
-		global $post;
-        $Ancestor = $this->get_ancestror ($menu, $post->ID);
-		
-		if($Ancestor) {
-			
-			$auto_title = isset($instance['auto_title']) && $instance['auto_title'] ? true : false;
-            $depth = isset( $instance['depth'] ) && (int)$instance['depth']  ? $instance['depth'] : 0;
-            $show_parent = isset( $instance['show_parent'] ) && $instance['show_parent']  ? true : false;
-            $show_description = isset( $instance['show_description'] ) && (int)$instance['show_description']  ? $instance['show_description'] : 0;
-            
-            global $GKSM_ID, $GKSM_MENUID;
-			$GKSM_ID = $Ancestor->ID; $GKSM_MENUID = $menu;
-            $out = wp_nav_menu( array( 'menu'=> $menu, 'fallback_cb'=>'', 'echo'=>false, 'show_description'=> $show_description, "depth"=>$depth ) );
-            $GKSM_ID = $GKSM_MENUID = null;
-			
-            if($out) {
-	            
-            	$title = '';
-                if( $auto_title ) {
-                    $title = $Ancestor->title;
-                }
-                else $title = $instance['title'];
-            	
-                $title = apply_filters('widget_title', $title, $instance, $this->id_base);
-                
-            	echo $before_widget; 
-				
-	            if($title) {
-	            	echo $before_title . apply_filters('widget_title', $title, $instance, $this->id_base) . $after_title;
-	            }
-	            
-	            echo $out;           
-	            
-				echo $after_widget;
-				
-			}
-		}
+		$Menu = new Gecka_Submenu_Submenu($instance);
+
+		$Menu->Widget($args, $instance);
 	}
     
     public function update( $new_instance, $old_instance ) {
@@ -126,37 +90,6 @@ class GKSM_Widget_autosubmenu extends WP_Widget {
 	        </p>
         
         <?php 
-    }
-	
-    private function getMenuItem ($item_id, &$menu_items) {
-       foreach($menu_items as $Item) {
-            if($Item->ID == $item_id) return $Item;
-       }
-       return false;
-    }
-	
-	private function get_ancestror ($menu, $postID) {
-        
-        $MenuItems = wp_get_nav_menu_items($menu);
-        $AssociatedMenuItems = wp_get_associated_nav_menu_items( $postID );
-        
-        foreach($AssociatedMenuItems as $associated) {
-        	$Item = $this->getMenuItem($associated, &$MenuItems);
-        	if($Item) break;
-        }
-
-        if( ! $Item ) return;
-        
-        $Ancestror = $Item;
-        while(1) {
-            if($Item->menu_item_parent) {
-                $Item = $this->getMenuItem($Item->menu_item_parent, &$MenuItems);
-                continue;
-            }
-            break;
-        }
-        
-        return $Item;
     }
 	
 }
