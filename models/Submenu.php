@@ -114,14 +114,12 @@ Class Gecka_Submenu_Submenu {
 		
 		if( ($auto && !$Ancestor) && !(int)$submenu) return;
 		
-		
 		// builds the submenu
 		$depth 		= (int)$depth ? (int)$depth : 0;
         $show_description = $show_description ? true : false;
    
         $this->TopLevelItem = ($auto && $Ancestor) ? $Ancestor : wp_setup_nav_menu_item( get_post( $submenu ) );
 		
-        
         if( isset($this->TopLevelItem->showsub) && $this->TopLevelItem->showsub ) {
         	
         	return $out = wp_list_pages( array('echo'=>false, 'title_li'=>'', "depth"=>$depth, "child_of"=>$this->TopLevelItem->object_id) );
@@ -189,13 +187,20 @@ Class Gecka_Submenu_Submenu {
     
     private function get_associated_nav_menu_items( $postID ) 
     {
+    	
     	$AssociatedMenuItems = wp_get_associated_nav_menu_items( $postID );
         
-    	
-    	// if not found and if the post is a page, we hook throught 
+    	// the post is a page, we hook throught 
     	// parent pages until we find one references in the menu
-    	
-    	
+    	if(is_page($postID)) {
+    		
+    		$ancestors = array_reverse( get_post_ancestors( $postID ));
+    		
+    		foreach ($ancestors as $ancestor) {
+    			$AssociatedMenuItems = array_merge(wp_get_associated_nav_menu_items( $ancestor ),$AssociatedMenuItems);
+    			if(sizeof($AssociatedMenuItems)) return $AssociatedMenuItems;
+    		}
+    	}
     	return $AssociatedMenuItems;
     }
     
