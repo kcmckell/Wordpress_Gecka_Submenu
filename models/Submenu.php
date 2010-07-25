@@ -72,10 +72,8 @@ Class Gecka_Submenu_Submenu {
     		echo $out;
     		 
     		echo $after_widget;
-
     	}
-
-    }
+	}
 	
 	private function Build($Options = null) 
 	{
@@ -122,7 +120,7 @@ Class Gecka_Submenu_Submenu {
 		
         if( isset($this->TopLevelItem->showsub) && $this->TopLevelItem->showsub ) {
         	
-        	return $out = wp_list_pages( array('echo'=>false, 'title_li'=>'', "depth"=>$depth, "child_of"=>$this->TopLevelItem->object_id) );
+        	return '<ul class="sub-menu" >' . wp_list_pages( array('echo'=>false, 'title_li'=>'', "depth"=>$depth, "child_of"=>$this->TopLevelItem->object_id) ). '</ul>';
         	
         }
         
