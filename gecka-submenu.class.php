@@ -29,7 +29,10 @@ class Gecka_Submenu {
 			require_once  GKSM_PATH . '/models/Shortcodes.php';
 			new Gecka_Submenu_Shortcodes();
 		}
-        
+		
+		// Nav menu hacks
+        require_once  GKSM_PATH . '/models/NavMenuHacks.php';
+		new Gecka_Submenu_NavMenuHacks();
 	}
 	
 	/**
@@ -60,7 +63,7 @@ class Gecka_Submenu {
      */
     public function wp_get_nav_menu_items($items, $menu, $args) {
         global $GKSM_ID, $GKSM_MENUID;
-        
+
         if( isset($GKSM_ID) && $GKSM_ID
         	&& isset($GKSM_MENUID) && $GKSM_MENUID==$menu->term_id ) $items = $this->wp_nav_menu_items_children( $GKSM_ID, $items );
     
@@ -94,7 +97,7 @@ class Gecka_Submenu {
      * @return $item_output
      */
     public function walker_nav_menu_start_el ($item_output, $item, $depth, $args) {
-        if($args->show_description) {
+        if(isset($args->show_description) && $args->show_description) {
           
             $desc .= ! empty( $item->description ) ? '<span class="description">'    . esc_html( $item->description        ) .'</span>' : '';
               

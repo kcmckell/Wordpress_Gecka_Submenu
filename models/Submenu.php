@@ -4,42 +4,47 @@
 Class Gecka_Submenu_Submenu {
 	
 	private $Options;
-	private $DefaultOptions = array( 'menu'		=> null,
-									 'submenu'	=> null,
-									 'auto' 	=> false,
-									 'post_id'	=> null,
-									 'title'	=> '',
-									 'depth'	=> 0,
-									 'auto_title' 	=> false,
-									 'show_description'		=> false
+	private $DefaultOptions = array( 	'menu'		=> null,
+									 	'submenu'	=> null,
+									 	'auto' 	=> false,
+									 	'post_id'	=> null,
+									 	'title'	=> '',
+									 	'depth'	=> 0,
+									 	'auto_title' 	=> false,
+									 	'show_description'		=> false
 									);
 	
 	// Always holds the latest Top level menu Item
 	private $TopLevelItem;
 									
-	public function __construct ($Options = array()) {
+	public function __construct ($Options = array()) 
+	{
 		
 		$this->Options = wp_parse_args($Options, $this->DefaultOptions);
 		
 	}
 	
-	public function Show($Options = null) {
+	public function Show($Options = null) 
+	{
 		
 		echo $this->Build($Options);
 		
 	}
 	
 	
-	public function Get($Options = null) {
+	public function Get($Options = null) 
+	{
 		
 		return $this->Build($Options);
 	}
 	
-	public function GetTopLevelItem () {
+	public function GetTopLevelItem () 
+	{
 		return $this->TopLevelItem;
 	}
 	
-	public function Widget($args, $instance) {
+	public function Widget($args, $instance) 
+	{
 
     	extract($args, EXTR_SKIP);
 
@@ -56,12 +61,12 @@ Class Gecka_Submenu_Submenu {
     		}
     		else $title = $instance['title'];
        
-    		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
+    		$title = apply_filters('widget_title', $title, $instance);
 
     		echo $before_widget;
 
     		if($title) {
-    			echo $before_title . apply_filters('widget_title', $title, $instance, $this->id_base) . $after_title;
+    			echo $before_title . apply_filters('widget_title', $title, $instance) . $after_title;
     		}
     		 
     		echo $out;
@@ -72,7 +77,8 @@ Class Gecka_Submenu_Submenu {
 
     }
 	
-	private function Build($Options = null) {
+	private function Build($Options = null) 
+	{
 		
 		if( $Options !== null ) extract( wp_parse_args($Options, $this->Options) );
 		else extract($this->Options);
@@ -134,7 +140,9 @@ Class Gecka_Submenu_Submenu {
 	 * @param array $menu_items array of menu items
 	 * @return object $Item a menu item object or false
 	 */
-	private function getMenuItem ($item_id, &$menu_items) {
+	private function getMenuItem ($item_id, &$menu_items) 
+	{
+		if(!is_array($menu_items)) return false;
        foreach($menu_items as $Item) {
             if($Item->ID == $item_id) return $Item;
        }
@@ -147,17 +155,18 @@ Class Gecka_Submenu_Submenu {
      * @param int $postID post ID to look for
      * @return object $Item a menu item object or false
      */
-	private function get_ancestor ($menu, $postID) {
+	private function get_ancestor ($menu, $postID) 
+	{
         
         $MenuItems = wp_get_nav_menu_items($menu);
-        $AssociatedMenuItems = wp_get_associated_nav_menu_items( $postID );
+        $AssociatedMenuItems = $this->get_associated_nav_menu_items( $postID );
         
         foreach($AssociatedMenuItems as $associated) {
         	$Item = $this->getMenuItem($associated, &$MenuItems);
         	if($Item) break;
         }
 
-        if( ! $Item ) return;
+        if( !isset($Item) || !$Item ) return;
         
         $Ancestror = $Item;
         while(1) {
@@ -170,4 +179,17 @@ Class Gecka_Submenu_Submenu {
         
         return $Item;
     }
+    
+    private function get_associated_nav_menu_items( $postID ) 
+    {
+    	$AssociatedMenuItems = wp_get_associated_nav_menu_items( $postID );
+        
+    	
+    	// if not found and if the post is a page, we hook throught 
+    	// parent pages until we find one references in the menu
+    	
+    	
+    	return $AssociatedMenuItems;
+    }
+    
 }
