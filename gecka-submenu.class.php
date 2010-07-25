@@ -65,7 +65,9 @@ class Gecka_Submenu {
         global $GKSM_ID, $GKSM_MENUID;
 
         if( isset($GKSM_ID) && $GKSM_ID
-        	&& isset($GKSM_MENUID) && $GKSM_MENUID==$menu->term_id ) $items = $this->wp_nav_menu_items_children( $GKSM_ID, $items );
+        	&& isset($GKSM_MENUID) && $GKSM_MENUID==$menu->term_id ) {
+        		$items = $this->wp_nav_menu_items_children( $GKSM_ID, $items );	
+        	}
     
         return $items;
     }
@@ -74,16 +76,16 @@ class Gecka_Submenu {
     
         $item_list = array();
         foreach ( (array) $items as $item ) {
-            if ( $item->menu_item_parent == $item_id ) {
+            if ( $item->menu_item_parent == $item_id ) 
+            //if ( $item->menu_item_parent == $item_id || $item->ID == $item_id) 
                 $item_list[] = $item;
-                
+            if ( $item->menu_item_parent == $item_id ) {  
                 $children = $this->wp_nav_menu_items_children($item->db_id, $items);
                 if ( $children ) {
                     $item_list = array_merge($item_list, $children);
                 }
             }
         }
-        
         return $item_list;
     }
     

@@ -121,6 +121,13 @@ Class Gecka_Submenu_Submenu {
    
         $this->TopLevelItem = ($auto && $Ancestor) ? $Ancestor : wp_setup_nav_menu_item( get_post( $submenu ) );
 		
+        
+        if( isset($this->TopLevelItem->showsub) && $this->TopLevelItem->showsub ) {
+        	
+        	return $out = wp_list_pages( array('echo'=>false, 'title_li'=>'', "depth"=>$depth, "child_of"=>$this->TopLevelItem->object_id) );
+        	
+        }
+        
         // global variable for the filter to use (see filter in gecka-submenu.class.php)
         global $GKSM_ID, $GKSM_MENUID;
 		$GKSM_ID = $this->TopLevelItem->ID; $GKSM_MENUID = $menu;
