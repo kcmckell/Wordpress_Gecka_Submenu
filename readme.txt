@@ -56,6 +56,10 @@ To get the menu item linked to current post, I use the wp_get_associated_nav_men
 
 == Changelog ==
 
+= 0.4 =
+* Fixed some notice errors
+* Experimental functionnality to autopopulate a page menu item with its subpages
+
 = 0.3 =
 * Added template tag and shortcode support
 
