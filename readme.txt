@@ -27,11 +27,11 @@ See Installation to for shortcode and template tag details.
 Now you can use the two provided widgets, the [submenu] shortcode and the 'submenu' template tag action.
 
 The shortcode and template tag options are the same:
-* **menu** : the nav menu ID (mandatory)
-* **submenu** : the child menu item id to start menu at, will try to guess it using current post if not provided
-* **auto** : automatically generates a submenu starting from the current post menu item's top parent item
-* **show_description** if set to true or 1, will show the menu items description in the <a> tag in a span with 'description' css class
-* **depth** specify the depth of the submenu
+* "menu" : the nav menu ID (mandatory)
+* "submenu" : the child menu item id to start menu at, will try to guess it using current post if not provided
+* "auto" : automatically generates a submenu starting from the current post menu item's top parent item
+* "show_description" if set to true or 1, will show the menu items description in the <a> tag in a span with 'description' css class
+* "depth" specify the depth of the submenu
 
 Examples:
 [submenu menu=3] : will show a submenu starting from current post/page
