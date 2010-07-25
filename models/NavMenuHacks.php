@@ -68,7 +68,7 @@ Class Gecka_Submenu_NavMenuHacks {
  
     	 if( isset($item->showsub) && $item->showsub =='1') {
         	$args = array( 'depth'        => 0,
-					        'child_of'     => 449,
+					        'child_of'     => $item->object_id,
 					        'echo'         => 0, 'title_li' => '' );
         	
             $item_output = $item_output . '<ul class="sub-menu" >' . wp_list_pages($args) . '</ul>';
