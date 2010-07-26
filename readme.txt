@@ -3,7 +3,7 @@ Contributors: Laurent Dinclaux
 Tags: nav menu, 3.0, submenu, sub-menu, child, child menu, portion of menu, menu portion
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.3
+Stable tag: 0.4
 
 Provides submenu and autosubmenu widgets, shortcode and template tag for the new wordpress 3.0 menu system.
 
@@ -58,7 +58,7 @@ To get the menu item linked to current post, I use the wp_get_associated_nav_men
 
 = 0.4 =
 * Fixed some notice errors
-* Experimental functionnality to autopopulate a page menu item with its subpages
+* Experimental functionnality to autopopulate a page menu item with its subpages for WP 3.0 nav menu system
 
 = 0.3 =
 * Added template tag and shortcode support
