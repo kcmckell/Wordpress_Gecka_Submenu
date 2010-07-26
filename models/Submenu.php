@@ -104,6 +104,7 @@ Class Gecka_Submenu_Submenu {
 			if( (int)$post_id ) $post_id = (int)$post_id;	
 			else {
 				global $post;
+				if(!is_object($post)) return;
 				$post_id = (int)$post->ID;
 			}
 			
