@@ -85,7 +85,20 @@ Class Gecka_Submenu_Submenu {
         $show_description = $show_description ? true : false;
         $submenu = (int)$submenu;
 		
-		// menu is mandatory
+		// if no menu specified, gets the lowest ID menu
+		if(!$menu || !is_nav_menu($menu)) {
+			
+			$menus = wp_get_nav_menus();
+			
+			foreach ( $menus as $menu_maybe ) {
+				if ( $menu_items = wp_get_nav_menu_items($menu_maybe->term_id) ) {
+					$menu = $menu_maybe->term_id;
+					break;
+				}
+			}
+		}
+		
+		// still can't find a menu, we exit
 		if(!$menu || !is_nav_menu($menu)) return;
 		
 		// if not in auto mode and no submenu specified, we use the current post
