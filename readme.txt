@@ -53,8 +53,12 @@ To get the menu item linked to current post, I use the wp_get_associated_nav_men
 
 1. Auto Sub-menu widget
 2. Sub-menu widget
+3. Autopopulate child pages option
 
 == Changelog ==
+
+= 0.4.1 =
+* Fixed bug in submenu builder
 
 = 0.4 =
 * Fixed some notice errors

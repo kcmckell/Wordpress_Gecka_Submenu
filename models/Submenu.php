@@ -81,45 +81,64 @@ Class Gecka_Submenu_Submenu {
 		if( $Options !== null ) extract( wp_parse_args($Options, $this->Options) );
 		else extract($this->Options);
 		
+		$depth = (int)$depth ? (int)$depth : 0;
+        $show_description = $show_description ? true : false;
+        $submenu = (int)$submenu;
+		
 		// menu is mandatory
 		if(!$menu || !is_nav_menu($menu)) return;
 		
-		// verify submenu id if provided
-		if( (int)$submenu && !is_nav_menu_item($submenu)) return;
-		
-		// not auto or no submenu given, makes it an auto submenu with current post as parent
-		if( !$auto && !(int)$submenu) {
-			
-			global $post;
+		// if not in auto mode and no submenu specified, we use the current post
+		// as the top level element
+		if( !$auto && !$submenu ) {
+		    
+		    global $post;
 			if( is_a($post, 'stdClass') && (int)$post->ID ) {
-				$auto = true;	
-				$post_id = $post->ID;
+				$submenu = $post->ID;
 			}
-			
+		    
+		}
+				
+		// verify submenu ID, if provided
+		if( $submenu && ( !is_nav_menu_item($submenu) && !is_page($submenu) ) ) return;
+		
+		$TopLevelElementId = null;
+		$FallbackToPages = false;
+		
+		// a submenu has been specified
+		if($submenu) {
+		    
+		    $TopLevelElementId = $submenu;
+		    
+		    // it is not a nav menu item, we need to guess if an existing menu item
+		    // points to it
+		    if( !is_nav_menu_item($submenu) ) {
+
+		    	$AssociatedMenuItems = $this->get_associated_nav_menu_items( $submenu , 'post_type',$menu );
+		         
+		        // no associated menu item found, falling back to wp_list_pages
+		        if( empty($AssociatedMenuItems) ) {
+		        	$FallbackToPages = true;
+		        }
+		    }
+		
 		}
 		
 		// get menu item ancestor for the given or the current post_id in provided menu
 		if( $auto ) {
+			global $post;
 			
-			if( (int)$post_id ) $post_id = (int)$post_id;	
-			else {
-				global $post;
-				if(!is_object($post)) return;
-				$post_id = (int)$post->ID;
+			if( is_a($post, 'stdClass') && (int)$post->ID ) {
+				$TopLevelItem = $this->get_ancestor ($menu, $post->ID);
 			}
+			if(!$TopLevelItem) return;
 			
-			$Ancestor = $this->get_ancestor ($menu, $post_id);
 		}
 		
-		if( ($auto && !$Ancestor) && !(int)$submenu) return;
-		
 		// builds the submenu
-		$depth 		= (int)$depth ? (int)$depth : 0;
-        $show_description = $show_description ? true : false;
-   
-        $this->TopLevelItem = ($auto && $Ancestor) ? $Ancestor : wp_setup_nav_menu_item( get_post( $submenu ) );
+		$this->TopLevelItem = isset($TopLevelItem) ? $TopLevelItem : wp_setup_nav_menu_item( get_post( $TopLevelElementId ) );
 		
-        if( isset($this->TopLevelItem->showsub) && $this->TopLevelItem->showsub ) {
+        if( $FallbackToPages || (isset($this->TopLevelItem->showsub) && $this->TopLevelItem->showsub) ) {
         	
         	return '<ul class="sub-menu" >' . wp_list_pages( array('echo'=>false, 'title_li'=>'', "depth"=>$depth, "child_of"=>$this->TopLevelItem->object_id) ). '</ul>';
         	
@@ -163,8 +182,13 @@ Class Gecka_Submenu_Submenu {
 	{
         
         $MenuItems = wp_get_nav_menu_items($menu);
-        $AssociatedMenuItems = $this->get_associated_nav_menu_items( $postID );
+       
+        if(!is_page($postID))
+        	$AssociatedMenuItems = $this->get_associated_nav_menu_items( $postID );
+        else
+        	$AssociatedMenuItems = $this->get_page_associated_nav_menu_items( $postID );
         
+        // uses the first associated menu item
         foreach($AssociatedMenuItems as $associated) {
         	$Item = $this->getMenuItem($associated, &$MenuItems);
         	if($Item) break;
@@ -184,22 +208,51 @@ Class Gecka_Submenu_Submenu {
         return $Item;
     }
     
-    private function get_associated_nav_menu_items( $postID ) 
+    function get_associated_nav_menu_items( $object_id = 0, $object_type = 'post_type', $menu_id = 0) {
+	    $object_id = (int) $object_id;
+	    $menu_item_ids = array();
+
+	    if($menu_id)
+	    	$objects = get_objects_in_term( $menu_id, 'nav_menu'  );
+	    
+	    $query = new WP_Query;
+	    $menu_items = $query->query(
+		    array(
+			    'meta_key' => '_menu_item_object_id',
+			    'meta_value' => $object_id,
+			    'post_status' => 'any',
+			    'post_type' => 'nav_menu_item',
+			    'showposts' => -1,
+		    )
+	    );
+	    
+	    foreach( (array) $menu_items as $menu_item ) {
+		    if ( isset( $menu_item->ID ) && is_nav_menu_item( $menu_item->ID ) ) {
+			    if ( get_post_meta( $menu_item->ID, '_menu_item_type', true ) != $object_type )
+				    continue;
+
+				if( $menu_id && !in_array($menu_item->ID, $objects) ) continue; 
+				    
+			    $menu_item_ids[] = (int) $menu_item->ID;
+		    }
+	    }
+
+	    return array_unique( $menu_item_ids );  
+    }
+    
+    
+    private function get_page_associated_nav_menu_items( $postID ) 
     {
-    	
-    	$AssociatedMenuItems = wp_get_associated_nav_menu_items( $postID );
+    	$AssociatedMenuItems = array();
+    	if(!is_page($postID)) return $AssociatedMenuItems;
         
-    	// the post is a page, we hook throught 
-    	// parent pages until we find one references in the menu
-    	if(is_page($postID)) {
+    	$ancestors = array_reverse( get_post_ancestors( $postID ));
     		
-    		$ancestors = array_reverse( get_post_ancestors( $postID ));
-    		
-    		foreach ($ancestors as $ancestor) {
-    			$AssociatedMenuItems = array_merge(wp_get_associated_nav_menu_items( $ancestor ),$AssociatedMenuItems);
-    			if(sizeof($AssociatedMenuItems)) return $AssociatedMenuItems;
-    		}
+    	foreach ($ancestors as $ancestor) {
+    		$AssociatedMenuItems = wp_get_associated_nav_menu_items( $ancestor );
+    		if(sizeof($AssociatedMenuItems)) break;
     	}
+    	
     	return $AssociatedMenuItems;
     }
     
