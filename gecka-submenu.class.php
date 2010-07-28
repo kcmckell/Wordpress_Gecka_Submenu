@@ -16,6 +16,8 @@ class Gecka_Submenu {
 
 		load_plugin_textdomain(self::Domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages');
 		
+		add_action('init', array($this, 'init') );
+		
 		// load widgets
 		add_action('widgets_init', array($this, 'widgetsInit') );
 		
@@ -35,10 +37,17 @@ class Gecka_Submenu {
 		new Gecka_Submenu_NavMenuHacks();
 	}
 	
+	public function init() 
+	{
+		// remove a silly 2010 theme filter
+		remove_filter( 'wp_page_menu_args', 'twentyten_page_menu_args' );
+	}
+	
 	/**
 	 * Init widgets
 	 */
-    public function widgetsInit () {
+    public function widgetsInit () 
+    {
 
         // Check for the required plugin functions. This will prevent fatal
         // errors occurring when you deactivate the dynamic-sidebar plugin.
@@ -52,6 +61,8 @@ class Gecka_Submenu {
         // Auto submenu widget
         include_once dirname(__FILE__) . '/widgets/AutoSubmenu.php';
         register_widget("GKSM_Widget_AutoSubmenu");
+        
+        
     }
     
     /**
