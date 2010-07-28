@@ -113,7 +113,7 @@ Class Gecka_Submenu_Submenu {
 			}
 		    
 		}
-
+			
 		// verify submenu ID, if provided
 		if( $submenu && ( !is_nav_menu_item($submenu) && !is_page($submenu) ) ) return;
 		
@@ -141,7 +141,8 @@ Class Gecka_Submenu_Submenu {
 		
 		}
 		
-		// get menu item ancestor for the given or the current post_id in provided menu		
+		// get menu item ancestor for the given or the current post_id in provided menu
+		
 		if( $auto ) {
 			global $post;
 			
@@ -228,27 +229,29 @@ Class Gecka_Submenu_Submenu {
     function get_associated_nav_menu_items( $object_id = 0, $object_type = 'post_type', $menu_id = 0) {
 	    $object_id = (int) $object_id;
 	    $menu_item_ids = array();
-
-	    if($menu_id)
-	    	$objects = get_objects_in_term( $menu_id, 'nav_menu'  );
 	    
+    	$query_args = array(
+			        'meta_key' => '_menu_item_object_id',
+			        'meta_value' => $object_id,
+			        'post_status' => 'any',
+			        'post_type' => 'nav_menu_item',
+			        'showposts' => -1,
+		          );
+		    
+		if( $menu_id ) {
+	    	$term = get_term($menu_id, 'nav_menu');
+			$query_args = array_merge($query_args, array( 'taxonomy' => 'nav_menu', 'term' => $term->slug) );
+		}
+	    	
 	    $query = new WP_Query;
-	    $menu_items = $query->query(
-		    array(
-			    'meta_key' => '_menu_item_object_id',
-			    'meta_value' => $object_id,
-			    'post_status' => 'any',
-			    'post_type' => 'nav_menu_item',
-			    'showposts' => -1,
-		    )
-	    );
+	    $menu_items = $query->query($query_args);
 	    
 	    foreach( (array) $menu_items as $menu_item ) {
 		    if ( isset( $menu_item->ID ) && is_nav_menu_item( $menu_item->ID ) ) {
 			    if ( get_post_meta( $menu_item->ID, '_menu_item_type', true ) != $object_type )
 				    continue;
 
-				if( $menu_id && !in_array($menu_item->ID, $objects) ) continue; 
+				//if( $menu_id && !in_array($menu_item->ID, $objects) ) continue; 
 				    
 			    $menu_item_ids[] = (int) $menu_item->ID;
 		    }
@@ -274,3 +277,4 @@ Class Gecka_Submenu_Submenu {
     }
     
 }
+
