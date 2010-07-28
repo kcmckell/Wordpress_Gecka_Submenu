@@ -113,7 +113,7 @@ Class Gecka_Submenu_Submenu {
 			}
 		    
 		}
-				
+
 		// verify submenu ID, if provided
 		if( $submenu && ( !is_nav_menu_item($submenu) && !is_page($submenu) ) ) return;
 		
@@ -141,12 +141,12 @@ Class Gecka_Submenu_Submenu {
 		
 		}
 		
-		// get menu item ancestor for the given or the current post_id in provided menu
+		// get menu item ancestor for the given or the current post_id in provided menu		
 		if( $auto ) {
 			global $post;
 			
 			if( is_a($post, 'stdClass') && (int)$post->ID ) {
-				$TopLevelItem = $this->get_ancestor ($menu, $post->ID);
+			 	$TopLevelItem = $this->get_ancestor ($menu, $post->ID);
 			}
 			if(!$TopLevelItem) return;
 			
@@ -201,9 +201,9 @@ Class Gecka_Submenu_Submenu {
         $MenuItems = wp_get_nav_menu_items($menu);
        
         if(!is_page($postID))
-        	$AssociatedMenuItems = $this->get_associated_nav_menu_items( $postID );
+        	$AssociatedMenuItems = $this->get_associated_nav_menu_items( $postID, 'post_type', $menu );
         else
-        	$AssociatedMenuItems = $this->get_page_associated_nav_menu_items( $postID );
+        	$AssociatedMenuItems = $this->get_page_associated_nav_menu_items( $postID, 'post_type', $menu );
         
         // uses the first associated menu item
         foreach($AssociatedMenuItems as $associated) {
@@ -258,15 +258,15 @@ Class Gecka_Submenu_Submenu {
     }
     
     
-    private function get_page_associated_nav_menu_items( $postID ) 
+    private function get_page_associated_nav_menu_items( $object_id = 0, $object_type = 'post_type', $menu_id = 0 ) 
     {
-    	$AssociatedMenuItems = array();
-    	if(!is_page($postID)) return $AssociatedMenuItems;
+    	$AssociatedMenuItems = $this->get_associated_nav_menu_items( $object_id, $object_type, $menu_id);
+    	if(!is_page($object_id)) return $AssociatedMenuItems;
         
-    	$ancestors = array_reverse( get_post_ancestors( $postID ));
+    	$ancestors = array_reverse( get_post_ancestors( $object_id ));
     		
     	foreach ($ancestors as $ancestor) {
-    		$AssociatedMenuItems = wp_get_associated_nav_menu_items( $ancestor );
+    		$AssociatedMenuItems = array_merge( $AssociatedMenuItems, wp_get_associated_nav_menu_items( $ancestor ) );
     		if(sizeof($AssociatedMenuItems)) break;
     	}
     	
