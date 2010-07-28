@@ -11,7 +11,9 @@ Class Gecka_Submenu_Submenu {
 									 	'title'	=> '',
 									 	'depth'	=> 0,
 									 	'auto_title' 	=> false,
-									 	'show_description'		=> false
+									 	'show_description'		=> false,
+										'container_class' => 'submenu',
+										'show_home' => false
 									);
 	
 	// Always holds the latest Top level menu Item
@@ -128,11 +130,13 @@ Class Gecka_Submenu_Submenu {
 		    if( !is_nav_menu_item($submenu) ) {
 
 		    	$AssociatedMenuItems = $this->get_associated_nav_menu_items( $submenu , 'post_type',$menu );
-		         
+		        
 		        // no associated menu item found, falling back to wp_list_pages
 		        if( empty($AssociatedMenuItems) ) {
 		        	$FallbackToPages = true;
 		        }
+		        
+		        else $TopLevelElementId = $AssociatedMenuItems[0];
 		    }
 		
 		}
@@ -153,7 +157,7 @@ Class Gecka_Submenu_Submenu {
 		
         if( $FallbackToPages || (isset($this->TopLevelItem->showsub) && $this->TopLevelItem->showsub) ) {
         	
-        	return '<ul class="sub-menu" >' . wp_list_pages( array('echo'=>false, 'title_li'=>'', "depth"=>$depth, "child_of"=>$this->TopLevelItem->object_id) ). '</ul>';
+        	return '<ul class="sub-menu" >' . wp_page_menu( array('show_home'=>$show_home, 'menu_class' => $container_class, 'submenu', 'echo'=>false, 'title_li'=>'', "depth"=>$depth, "child_of"=>$this->TopLevelItem->object_id) ). '</ul>';
         	
         }
         
@@ -162,7 +166,7 @@ Class Gecka_Submenu_Submenu {
 		$GKSM_ID = $this->TopLevelItem->ID; $GKSM_MENUID = $menu;
         
 		// gets the nav menu
-		$out = wp_nav_menu( array( 'menu'=> $menu, 'fallback_cb'=>'', 'echo'=>false, 'show_description'=> $show_description, "depth"=>$depth ) );
+		$out = wp_nav_menu( array( 'container_class' => $container_class, 'menu'=> $menu, 'fallback_cb'=>'', 'echo'=>false, 'show_description'=> $show_description, "depth"=>$depth ) );
         
 		// reset global variables
 		$GKSM_ID = $GKSM_MENUID = null;
