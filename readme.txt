@@ -57,6 +57,10 @@ To get the menu item linked to current post, I use the wp_get_associated_nav_men
 
 == Changelog ==
 
+= 0.4.2 =
+* More fixes
+* Menu parameter is no more mandatory, gets the lowest ID menu if not set 
+
 = 0.4.1 =
 * Fixed bug in submenu builder
 
@@ -73,4 +77,5 @@ To get the menu item linked to current post, I use the wp_get_associated_nav_men
 
 = 0.1 =
 * First version.
+
 
