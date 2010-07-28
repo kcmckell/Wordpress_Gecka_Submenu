@@ -3,7 +3,7 @@
 Plugin Name: Gecka Submenu
 Plugin URI: http://github.com/loxK/Wordpress_Gecka_Submenu
 Description: Provide submenu and autosubmenu widgets, submenu shortcode and submenu template tag for the new wordpress 3.0 menu system
-Version: 0.4.2
+Version: 0.4.2.1
 Author: Laurent Dinclaux
 Author URI: http://gecka.nc
 Licence: GPL2
