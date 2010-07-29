@@ -117,7 +117,7 @@ Class Gecka_Submenu_Submenu {
 		// verify submenu ID, if provided
 		if( $submenu && ( !is_nav_menu_item($submenu) && !is_page($submenu) ) ) return;
 		
-		$TopLevelElementId = null;
+		$TopLevelElementId = $TopLevelItem = null;
 		$FallbackToPages = false;
 		
 		// a submenu has been specified
