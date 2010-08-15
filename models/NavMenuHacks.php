@@ -1,4 +1,4 @@
-<?
+<?php
 
 Class Gecka_Submenu_NavMenuHacks {
 
