@@ -158,7 +158,7 @@ Class Gecka_Submenu_Submenu {
 		
         if( $FallbackToPages || (isset($this->TopLevelItem->showsub) && $this->TopLevelItem->showsub) ) {
         	
-        	return '<ul class="sub-menu" >' . wp_page_menu( array('show_home'=>$show_home, 'menu_class' => $container_class, 'submenu', 'echo'=>false, 'title_li'=>'', "depth"=>$depth, "child_of"=>$this->TopLevelItem->object_id) ). '</ul>';
+        	return '' . wp_page_menu( array('show_home'=>$show_home, 'menu_class' => $container_class, 'submenu', 'echo'=>false, 'title_li'=>'', "depth"=>$depth, "child_of"=>$this->TopLevelItem->object_id) ). '';
         	
         }
         
