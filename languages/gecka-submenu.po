@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gecka Sub-Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-22 09:07+1100\n"
+"POT-Creation-Date: 2010-08-17 14:44+1100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: lox <lox@knc.nc>\n"
+"Last-Translator: Lox <lox.dev@knc.nc>\n"
 "Language-Team: Gecka <contact@gecka.nc>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,52 +13,68 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../widgets/AutoSubmenu.php:12
+#: ../widgets/AutoSubmenu.php:13
 msgid "Automatically shows a sub-menu starting from the ancestor menu item of the currently viewed page. "
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:13
+#: ../widgets/AutoSubmenu.php:14
 msgid "Auto Sub-menu"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:92
-#: ../widgets/Submenu.php:98
+#: ../widgets/AutoSubmenu.php:61
+#: ../widgets/Submenu.php:58
 #, php-format
 msgid "No menus have been created yet. <a href=\"%s\">Create some</a>."
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:97
-#: ../widgets/Submenu.php:122
+#: ../widgets/AutoSubmenu.php:66
+#: ../widgets/Submenu.php:81
 msgid "Title:"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:101
-#: ../widgets/Submenu.php:127
+#: ../widgets/AutoSubmenu.php:70
+#: ../widgets/Submenu.php:86
 msgid "Use top parent item title"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:104
-#: ../widgets/Submenu.php:130
+#: ../widgets/AutoSubmenu.php:73
+#: ../widgets/Submenu.php:89
 msgid "Select Menu:"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:107
-#: ../widgets/Submenu.php:133
+#: ../widgets/AutoSubmenu.php:76
+#: ../widgets/Submenu.php:92
 msgid "Select"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:115
-#: ../widgets/Submenu.php:153
+#: ../widgets/AutoSubmenu.php:84
+msgid "Start menu from:"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:88
+msgid "Menu root"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:89
+msgid "Current page parent"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:90
+msgid "Current page"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:100
+#: ../widgets/Submenu.php:112
 msgid "Depth:"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:121
-#: ../widgets/Submenu.php:159
+#: ../widgets/AutoSubmenu.php:106
+#: ../widgets/Submenu.php:118
 msgid "Show parent item"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:125
-#: ../widgets/Submenu.php:162
+#: ../widgets/AutoSubmenu.php:110
+#: ../widgets/Submenu.php:121
 msgid "Show description"
 msgstr ""
 
@@ -70,20 +86,89 @@ msgstr ""
 msgid "Sub-menu"
 msgstr ""
 
-#: ../widgets/Submenu.php:144
+#: ../widgets/Submenu.php:103
 msgid "Select Sub-Menu:"
 msgstr ""
 
-#: ../widgets/Submenu.php:147
+#: ../widgets/Submenu.php:106
 msgid "Click save first"
 msgstr ""
 
-#: ../widgets/Submenu.php:181
-#: ../widgets/Submenu.php:190
+#: ../widgets/Submenu.php:140
+#: ../widgets/Submenu.php:149
 msgid "First select a nav menu"
 msgstr ""
 
-#: ../widgets/Submenu.php:197
+#: ../widgets/Submenu.php:156
 msgid "Error: Unknow menu."
+msgstr ""
+
+#: ../models/NavMenuHacks.php:126
+msgid "Automatically populate child pages"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:208
+#, php-format
+msgid "%s (Pending)"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:247
+#: ../models/NavMenuHacks.php:249
+msgid "Edit Menu Item"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:258
+msgid "URL"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:265
+msgid "Navigation Label"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:271
+msgid "Title Attribute"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:277
+msgid "Link Target"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:279
+msgid "Same window or tab"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:280
+msgid "New window or tab"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:286
+msgid "CSS Classes (optional)"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:292
+msgid "Link Relationship (XFN)"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:298
+#: ../models/NavMenuHacks.php:305
+msgid "Description"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:300
+#: ../models/NavMenuHacks.php:307
+msgid "The description will be displayed in the menu if the current theme supports it."
+msgstr ""
+
+#: ../models/NavMenuHacks.php:316
+#, php-format
+msgid "Original: %s"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:329
+msgid "Remove"
+msgstr ""
+
+#: ../models/NavMenuHacks.php:330
+msgid "Cancel"
 msgstr ""
 

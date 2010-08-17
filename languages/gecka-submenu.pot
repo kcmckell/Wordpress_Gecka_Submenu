@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gecka Sub-Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-25 19:09+1100\n"
+"POT-Creation-Date: 2010-08-17 14:44+1100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Laurent Dinclaux <lox.dev@knc.nc>\n"
+"Last-Translator: Lox <lox.dev@knc.nc>\n"
 "Language-Team: Gecka <contact@gecka.nc>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,51 +13,67 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../widgets/AutoSubmenu.php:12
+#: ../widgets/AutoSubmenu.php:13
 msgid "Automatically shows a sub-menu starting from the ancestor menu item of the currently viewed page. "
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:13
+#: ../widgets/AutoSubmenu.php:14
 msgid "Auto Sub-menu"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:56
+#: ../widgets/AutoSubmenu.php:61
 #: ../widgets/Submenu.php:58
 #, php-format
 msgid "No menus have been created yet. <a href=\"%s\">Create some</a>."
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:61
+#: ../widgets/AutoSubmenu.php:66
 #: ../widgets/Submenu.php:81
 msgid "Title:"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:65
+#: ../widgets/AutoSubmenu.php:70
 #: ../widgets/Submenu.php:86
 msgid "Use top parent item title"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:68
+#: ../widgets/AutoSubmenu.php:73
 #: ../widgets/Submenu.php:89
 msgid "Select Menu:"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:71
+#: ../widgets/AutoSubmenu.php:76
 #: ../widgets/Submenu.php:92
 msgid "Select"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:79
+#: ../widgets/AutoSubmenu.php:84
+msgid "Start menu from:"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:88
+msgid "Menu root"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:89
+msgid "Current page parent"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:90
+msgid "Current page"
+msgstr ""
+
+#: ../widgets/AutoSubmenu.php:100
 #: ../widgets/Submenu.php:112
 msgid "Depth:"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:85
+#: ../widgets/AutoSubmenu.php:106
 #: ../widgets/Submenu.php:118
 msgid "Show parent item"
 msgstr ""
 
-#: ../widgets/AutoSubmenu.php:89
+#: ../widgets/AutoSubmenu.php:110
 #: ../widgets/Submenu.php:121
 msgid "Show description"
 msgstr ""

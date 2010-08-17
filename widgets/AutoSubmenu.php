@@ -87,7 +87,7 @@ class GKSM_Widget_autosubmenu extends WP_Widget {
             
             $ar = array('top'      => __('Menu root', Gecka_Submenu::Domain),
             			'slibling' => __('Current page parent', Gecka_Submenu::Domain),
-            			'current'  => __('Current page.', Gecka_Submenu::Domain));
+            			'current'  => __('Current page', Gecka_Submenu::Domain));
             
             foreach ( $ar as $_k=>$_v ) {
             
