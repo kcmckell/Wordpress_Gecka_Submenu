@@ -6,6 +6,7 @@ class GKSM_Widget_autosubmenu extends WP_Widget {
 	                                    'auto_title'=>0, 
 	                                    'show_parent'=>0,
 	                                    'show_description'=>0, 
+										'start_from'=>'top'
 	                                     );
 	
 	public function GKSM_Widget_autosubmenu () {
@@ -25,15 +26,19 @@ class GKSM_Widget_autosubmenu extends WP_Widget {
 	}
     
     public function update( $new_instance, $old_instance ) {
-        $new_instance = (array) $new_instance;
+    	
+    	$new_instance = (array) $new_instance;
         
         $instance['title'] = strip_tags( stripslashes($new_instance['title']) );
         $instance['menu']  = (int) $new_instance['menu'];
+        
         
         foreach ( $this->default_options as $field => $val ) {
             if ( isset($new_instance[$field]) )
                 $instance[$field] = 1;
         }
+        
+        $instance['start_from']  = $new_instance['start_from'];
         
         $instance['depth'] = (int) $new_instance['depth'];
         
@@ -47,7 +52,7 @@ class GKSM_Widget_autosubmenu extends WP_Widget {
     	$title  = isset( $instance['title'] ) ? $instance['title'] : '';
         $menu   = isset( $instance['menu'] ) ? $instance['menu'] : '';
         $depth  = isset( $instance['depth'] ) ? $instance['depth'] : 0;
-        
+        $start_from   = isset( $instance['start_from'] ) ? $instance['start_from'] : '';
          // Get menus
         $menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
@@ -74,6 +79,22 @@ class GKSM_Widget_autosubmenu extends WP_Widget {
                 echo '<option'. $selected .' value="'. $_menu->term_id .'">'. $_menu->name .'</option>';
             }
             ?>
+            </select></p>
+            
+            <p><label for="<?php echo $this->get_field_id('start_from'); ?>"><?php _e('Start menu from:', Gecka_Submenu::Domain); ?></label>
+            <select id="<?php echo $this->get_field_id('start_from'); ?>" name="<?php echo $this->get_field_name('start_from'); ?>" >
+            <?php
+            
+            $ar = array('top'      => __('Menu root', Gecka_Submenu::Domain),
+            			'slibling' => __('Current page parent', Gecka_Submenu::Domain),
+            			'current'  => __('Current page.', Gecka_Submenu::Domain));
+            
+            foreach ( $ar as $_k=>$_v ) {
+            
+                echo '<option'. selected($start_from, $_k) .' value="'. $_k .'">'. $_v . '</option>';
+            }
+            ?>
+            
             </select></p>
             
             <p><label for="<?php echo $this->get_field_id('depth'); ?>"><?php _e( 'Depth:', Gecka_Submenu::Domain ); ?></label>

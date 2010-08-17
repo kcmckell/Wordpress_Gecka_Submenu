@@ -13,7 +13,8 @@ Class Gecka_Submenu_Submenu {
 									 	'auto_title' 	=> false,
 									 	'show_description'		=> false,
 										'container_class' => 'submenu',
-										'show_home' => false
+										'show_home' => false,
+										'start_from' => 'top'
 									);
 	
 	// Always holds the latest Top level menu Item
@@ -52,7 +53,7 @@ Class Gecka_Submenu_Submenu {
 
     	$out = $this->Get($instance);
 
-    	if($out) {
+    	if($out && trim($out) !== '<div class="'.$this->Options['container_class'].'"></div>') {
     		 
     		$auto_title = isset($instance['auto_title']) && $instance['auto_title'] ? true : false;
     		
@@ -87,6 +88,10 @@ Class Gecka_Submenu_Submenu {
         $show_description = $show_description ? true : false;
         $submenu = (int)$submenu;
 		
+        if( empty($start_from) ) $start_from = 'top';
+        else if( !in_array( $start_from, array('top', 'current', 'slibling') ) );
+        
+        
 		// if no menu specified, gets the lowest ID menu
 		if(!$menu || !is_nav_menu($menu)) {
 			
@@ -103,6 +108,21 @@ Class Gecka_Submenu_Submenu {
 		// still can't find a menu, we exit
 		if(!$menu || !is_nav_menu($menu)) return;
 		
+		if($auto && $start_from !== 'top') {
+			
+			global $post;
+			if( is_a($post, 'stdClass') && (int)$post->ID ) {
+			
+				if($start_from==='current')
+					$submenu = $post->ID;
+				elseif ($start_from==='slibling')
+					$submenu = $post->post_parent ? $post->post_parent : null;
+				else break;
+				
+				if($submenu != 0) $auto = false;
+			}
+		}
+		
 		// if not in auto mode and no submenu specified, we use the current post
 		// as the top level element
 		if( !$auto && !$submenu ) {
@@ -113,11 +133,10 @@ Class Gecka_Submenu_Submenu {
 			}
 		    
 		}
-			
+
 		// verify submenu ID, if provided
-		if( $submenu && ( !is_nav_menu_item($submenu) && !is_page($submenu) ) ) return;
-		
-		$TopLevelElementId = $TopLevelItem = null;
+		//if( $submenu && ( !is_nav_menu_item($submenu) && !is_page($submenu) ) ) return;
+		$TopLevelElementId = null;
 		$FallbackToPages = false;
 		
 		// a submenu has been specified
@@ -141,8 +160,7 @@ Class Gecka_Submenu_Submenu {
 		
 		}
 		
-		// get menu item ancestor for the given or the current post_id in provided menu
-		
+		// get menu item ancestor for the given or the current post_id in provided menu		
 		if( $auto ) {
 			global $post;
 			
@@ -229,29 +247,27 @@ Class Gecka_Submenu_Submenu {
     function get_associated_nav_menu_items( $object_id = 0, $object_type = 'post_type', $menu_id = 0) {
 	    $object_id = (int) $object_id;
 	    $menu_item_ids = array();
+
+	    if($menu_id)
+	    	$objects = get_objects_in_term( $menu_id, 'nav_menu'  );
 	    
-    	$query_args = array(
-			        'meta_key' => '_menu_item_object_id',
-			        'meta_value' => $object_id,
-			        'post_status' => 'any',
-			        'post_type' => 'nav_menu_item',
-			        'showposts' => -1,
-		          );
-		    
-		if( $menu_id ) {
-	    	$term = get_term($menu_id, 'nav_menu');
-			$query_args = array_merge($query_args, array( 'taxonomy' => 'nav_menu', 'term' => $term->slug) );
-		}
-	    	
 	    $query = new WP_Query;
-	    $menu_items = $query->query($query_args);
+	    $menu_items = $query->query(
+		    array(
+			    'meta_key' => '_menu_item_object_id',
+			    'meta_value' => $object_id,
+			    'post_status' => 'any',
+			    'post_type' => 'nav_menu_item',
+			    'showposts' => -1,
+		    )
+	    );
 	    
 	    foreach( (array) $menu_items as $menu_item ) {
 		    if ( isset( $menu_item->ID ) && is_nav_menu_item( $menu_item->ID ) ) {
 			    if ( get_post_meta( $menu_item->ID, '_menu_item_type', true ) != $object_type )
 				    continue;
 
-				//if( $menu_id && !in_array($menu_item->ID, $objects) ) continue; 
+				if( $menu_id && !in_array($menu_item->ID, $objects) ) continue; 
 				    
 			    $menu_item_ids[] = (int) $menu_item->ID;
 		    }
@@ -277,4 +293,3 @@ Class Gecka_Submenu_Submenu {
     }
     
 }
-
