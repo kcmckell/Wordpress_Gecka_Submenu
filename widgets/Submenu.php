@@ -43,7 +43,7 @@ class GKSM_Widget_Submenu extends WP_Widget {
 	
     public function form($instance) {              
         
-    	$instance = wp_parse_args( (array) $instance, $default_options);
+    	$instance = wp_parse_args( (array) $instance, $this->default_options);
         
     	$title     = isset( $instance['title'] ) ? $instance['title'] : '';
         $menu      = isset( $instance['menu'] ) ? $instance['menu'] : '';
