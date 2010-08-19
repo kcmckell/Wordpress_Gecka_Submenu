@@ -167,7 +167,7 @@ Class Gecka_Submenu_Submenu {
 			if( is_a($post, 'stdClass') && (int)$post->ID ) {
 			 	$TopLevelItem = $this->get_ancestor ($menu, $post->ID);
 			}
-			if(!$TopLevelItem) return;
+			if( empty($TopLevelItem) ) return;
 			
 		}
 		
