@@ -1,9 +1,9 @@
 <?php
 
-Class Gecka_Submenu_NavMenuHacks {
+class Gecka_Submenu_NavMenuHacks {
 
     function __construct() {
-        
+
         if(is_admin() ) {
         
             /* use custom walker */     
@@ -14,64 +14,124 @@ Class Gecka_Submenu_NavMenuHacks {
             
             /* save custom field */
             add_action('wp_update_nav_menu_item', array($this, 'wp_update_nav_menu_item'),10,3  );
+            
+            /* css */
+            add_action('admin_init', array($this, 'register_scripts'));
+            add_action( "admin_print_styles-nav-menus.php", array($this, 'admin_print_styles') );
         
         }
-        //add_filter( 'wp_get_nav_menu_items', array($this, 'wp_get_nav_menu_items'),15,3 );
+        add_filter( 'wp_get_nav_menu_items', array($this, 'wp_get_nav_menu_items'),10,3 );
             
-        /* set up nav menu item with custom property */
+        /* set up nav menu item with custom properties */
         add_filter( 'wp_setup_nav_menu_item', array($this, 'wp_setup_nav_menu_item') );
     
         /* customize menu display */
         add_filter( 'walker_nav_menu_start_el', array($this, 'walker_nav_menu_start_el'), 10,4 );
-        
          
     }
-    function wp_get_nav_menu_items ($items, $menu, $args) 
-    {
-    	foreach ($items as $item) {
-    		
-    		if($item->showsub==='1') {
-    			$pages = get_pages(array('child_of'=>$item->object_id, 'hierarchical' => 0) );
-    			
-    			foreach ($pages as $key=>$page) {
-	    			$page = wp_setup_nav_menu_item($page);
-	    			$page->menu_item_parent = $page->post_parent == $item->object_id ? $item->ID : $page->post_parent ;
-	    			$page->db_id = $page->ID;
-					$items[] = $page;
-	    		}
-    		}
-
-    		
-    		
-    	}
-/*    	foreach ($items as $item) {
-    		
-    		$item->description='';
-    		$item->post_content='';
-    		
-    		echo $item->ID ."<br>";
-    		echo $item->db_id ."<br>";
-    		
-    		echo $item->menu_item_parent ."<br>";
-    		echo $item->post_parent ."<br>";
-    		echo $item->object_id ."<br>";
-    		
-    		echo $item->object ."<br>";
-    		echo $item->title ."<br>"."<br>";
-    	}
-*/
-    	return $items;
+    
+    function wp_get_nav_menu_items ($items, $menu, $args) {
+    
+        if( is_admin() && $GLOBALS['pagenow'] == 'nav-menus.php' ) return $items;
+    
+            $order = sizeof($items)+1;
+    
+            foreach($items as $item) {
+            
+                if($item->autopopulate !== '1') continue;
+                
+                switch ($item->autopopulate_type) {
+                
+                    case 'subpages':
+                        
+                        $pages = get_pages(array('child_of' => $item->object_id, 'sort_column' => 'menu_order'));
+                        
+                        $this->setup_posts ('post', &$item, &$pages, &$items, &$order);
+                        
+                        break;
+                    
+                }
+            
+            }
+        return $items;
     }
     
-    function walker_nav_menu_start_el ( $item_output, $item, $depth, $args)
-    {
+    function setup_posts ($type, &$item, &$posts, &$items, &$order) {
+        
+        $_ids = $this->get_ids($type, $order, $posts);
+        
+        foreach($posts as $key=>$post) {
+            
+            $id = isset($post->ID) ? $post->ID : $post->term_id;
+                            
+            $parent_id = $item->ID;
+                            
+            if( isset($post->post_parent) && $post->post_parent && $post->post_parent != $item->object_id ) {
+               $parent_id = $_ids[$post->post_parent];
+            }
+            
+            if( isset($post->parent) && $post->parent && $post->parent != $item->object_id ) {
+               $parent_id = $_ids[$post->parent];
+            }
+            
+            $items[] = $this->menu_item_from_post($post, $_ids[$id], $parent_id, $order);
+            
+            $order++;
+                            
+        }
+                       
+        return $posts;
+    
+    }
+    
+    function get_ids ($type, $order, $items) {
+    
+        $ids = array();
+    
+        foreach($items as $item) {
+        
+            $id = $type == 'post' ? $item->ID : $item->term_id;
+        
+            $ids[$id] = -$order;
+        
+            $order++;
+        }
+        
+        
+        return $ids;
+    
+    }
+    
+    function menu_item_from_post ($post, $pseudo_id, $parent_id = 0, $order=0) {
+        $_item = is_object($post) ? clone $post : clone get_post($post);
+        
+        $id = $_item->ID ;
+        
+        $_item->ID = $_item->db_id =  $pseudo_id ;
+        $_item->post_name = '' . $pseudo_id;
+        $_item->object = $post->post_type;
+        $_item->post_type = 'nav_menu_item';
+        $_item->menu_item_parent = $parent_id;
+        $_item->object_id = $id;
+        $_item->type = 'post_type';
+        $_item->menu_order = $order;
+        $_item->description = $_item->post_excerpt;
+        wp_setup_nav_menu_item($_item);
+        
+        $_item->db_id =  $pseudo_id;
+        
+        return $_item;
+    
+    }    
+    
+    function walker_nav_menu_start_el ( $item_output, $item, $depth, $args) {
  
-    	 if( isset($item->showsub) && $item->showsub =='1') {
+    	 if( isset($item->autopopulate) && $item->autopopulate =='subpages') {
         	$args = array( 'depth'        => 0,
 					        'child_of'     => $item->object_id,
 					        'echo'         => 0, 'title_li' => '' );
         	
-            $item_output = $item_output . '<ul class="sub-menu" >' . wp_list_pages($args) . '</ul>';
+            //$item_output = $item_output . '<ul class="sub-menu" >' . wp_list_pages($args) . '</ul>';
            
         }
 	    return $item_output;
@@ -79,13 +139,14 @@ Class Gecka_Submenu_NavMenuHacks {
     
 
     /**
-     * Setup the nav menu object to have the showsub propertie
+     * Setup the nav menu object to have the additionnal properties
      */
-    function wp_setup_nav_menu_item($menu_item) 
-    {
+    function wp_setup_nav_menu_item($menu_item) {
         if ( isset( $menu_item->post_type ) ) {
+        
 		    if ( 'nav_menu_item' == $menu_item->post_type ) {
-		       	$menu_item->showsub = empty( $menu_item->showsub ) ? get_post_meta( $menu_item->ID, '_menu_item_showsub', true ) : $menu_item->showsub;
+		       	$menu_item->autopopulate = empty( $menu_item->autopopulate ) ? get_post_meta( $menu_item->ID, '_menu_item_autopopulate', true ) : $menu_item->autopopulate;
+		        $menu_item->autopopulate_type = empty( $menu_item->autopopulate_type ) ? get_post_meta( $menu_item->ID, '_menu_item_autopopulate_type', true ) : $menu_item->autopopulate_type;      
 		    }
 	    }
         return $menu_item;
@@ -93,44 +154,63 @@ Class Gecka_Submenu_NavMenuHacks {
    
 
     /**
-     * Saves the new field
+     * Saves the new fields
      */
-    function wp_update_nav_menu_item($menu_id, $menu_item_db_id, $args) 
-    {
-
-        $args['menu-item-showsub'] = isset( $_POST['menu-item-showsub'][$menu_item_db_id] ) ? $_POST['menu-item-showsub'][$menu_item_db_id] : '';
+    function wp_update_nav_menu_item($menu_id, $menu_item_db_id, $args) {
+    
+        $args['menu-item-autopopulate_type'] = isset( $_POST['menu-item-autopopulate_type'][$menu_item_db_id] ) ? $_POST['menu-item-autopopulate_type'][$menu_item_db_id] : '';
         
-        if ( empty( $args['menu-item-showsub'] ) ) {
-		    $args['menu-item-showsub'] = '0';
+        if ( empty( $args['menu-item-autopopulate_type'] ) ) {
+		    $args['menu-item-autopopulate_type'] = '';
         }
 
-       update_post_meta( $menu_item_db_id, '_menu_item_showsub', $args['menu-item-showsub'] );
-	
+        update_post_meta( $menu_item_db_id, '_menu_item_autopopulate_type', $args['menu-item-autopopulate_type'] );
+
+        
+        if( $args['menu-item-autopopulate_type'] === 'subpages' )  $args['menu-item-autopopulate'] = '1';
+        else  $args['menu-item-autopopulate'] = '0';
+
+        update_post_meta( $menu_item_db_id, '_menu_item_autopopulate', $args['menu-item-autopopulate'] );
+
+        
+        /* old version compatibility */
+          
+        if(  get_post_meta($menu_item_db_id, '_menu_item_showsub', true) == '1') {
+                
+            update_post_meta( $menu_item_db_id, '_menu_item_autopopulate_type', 'subpages' );
+           	update_post_meta( $menu_item_db_id, '_menu_item_autopopulate', '1' );
+            
+
+            delete_post_meta( $menu_item_db_id, '_menu_item_showsub', $args['menu-item-showsub'] );
+        }
+       
     }
     
+    function register_scripts () {    
+       wp_register_style('gecka-submenu-nav-menu-edit', GKSM_URL . '/css/admin-nav-menu-edit.css' );
+    }
+    
+    function admin_print_styles () {
+        wp_enqueue_style('gecka-submenu-nav-menu-edit');
+    }
+    
+    function admin_print_scripts () { }
 
     /**
-     * Adds a custom field
+     * Adds a custom fields
      */
-    function custom_walker($a) 
-    {
+    function custom_walker($a) {
         return 'Gecka_Walker_Nav_Menu_Edit';
     }
     
     function wp_nav_menu_item_custom_fields ( $item_id, $item, $depth, $args) {
     	if($item->object === 'page') {
-        	?>
-        		<p class="description description-wide">
-					<label for="edit-menu-item-showsub-<?php echo $item_id; ?>">
-						<input type="checkbox" id="edit-menu-item-showsub-<?php echo $item_id; ?>" class="widefat edit-menu-item-showsub" name="menu-item-showsub[<?php echo $item_id; ?>]" value="1" <?php if($item->showsub == '1') echo 'checked="checked"'; ?>/>
-					    <?php _e( 'Automatically populate child pages', Gecka_Submenu::Domain ); ?>
-					</label>
-		        </p>
-        	<?php
+        	include GKSM_PATH . '/views/Nav-Menu-Fields.php';
     	}
     }
-     
+    
 }
+
 /**
  * Create HTML list of nav menu input items.
  *
@@ -294,13 +374,6 @@ class Gecka_Walker_Nav_Menu_Edit extends Walker_Nav_Menu  {
 					</label>
 				</p>
 				<p class="field-description description description-wide">
-					<label for="edit-menu-item-description-<?php echo $item_id; ?>">
-						<?php _e( 'Description' ); ?><br />
-						<textarea id="edit-menu-item-description-<?php echo $item_id; ?>" class="widefat edit-menu-item-description" rows="3" cols="20" name="menu-item-description[<?php echo $item_id; ?>]"><?php echo esc_html( $item->description ); ?></textarea>
-						<span class="description"><?php _e('The description will be displayed in the menu if the current theme supports it.'); ?></span>
-					</label>
-				</p>
-                <p class="field-description description description-wide">
 					<label for="edit-menu-item-description-<?php echo $item_id; ?>">
 						<?php _e( 'Description' ); ?><br />
 						<textarea id="edit-menu-item-description-<?php echo $item_id; ?>" class="widefat edit-menu-item-description" rows="3" cols="20" name="menu-item-description[<?php echo $item_id; ?>]"><?php echo esc_html( $item->description ); ?></textarea>

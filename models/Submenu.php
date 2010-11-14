@@ -4,21 +4,36 @@
 Class Gecka_Submenu_Submenu {
 	
 	private $Options;
-	private $DefaultOptions = array( 	'menu'		=> null,
-									 	'submenu'	=> null,
-									 	'auto' 	=> false,
-									 	'post_id'	=> null,
+	private $DefaultOptions = array( 	'menu' => '', 
+	                                    'container' => 'div', 
+	                                    'container_class' => 'submenu', 
+	                                    'container_id' => '', 
+	                                    'menu_class' => 'menu', 
+	                                    'menu_id' => '',
+	                                    'echo' => false, 
+	                                    'fallback_cb' => 'wp_page_menu', 
+	                                    'before' => '', 
+	                                    'after' => '', 
+	                                    'link_before' => '', 
+	                                    'link_after' => '',
+	                                    'depth' => 0, 
+	                                    'walker' => '', 
+	                                    'theme_location' => '',
+	                                    
+	                                    'is_gk_submenu' => true,
+	                                    'submenu' => null,
+									 	'child_of'=> null,
+										'type' => 'post_type',
 									 	'title'	=> '',
-									 	'depth'	=> 0,
-									 	'auto_title' 	=> false,
-									 	'show_description'		=> false,
-										'container_class' => 'submenu',
-										'show_home' => false,
-										'start_from' => 'top'
+									 	'auto_title' => false,
+									 	'show_description' => false,
+										'thumbnail' => null,
+										'auto_title' => false
+									
 									);
 	
 	// Always holds the latest Top level menu Item
-	private $TopLevelItem;
+	private $top_level_item;
 									
 	public function __construct ($Options = array()) 
 	{
@@ -36,31 +51,32 @@ Class Gecka_Submenu_Submenu {
 	
 	
 	public function Get($Options = null) 
-	{
-		
+	{		
 		return $this->Build($Options);
 	}
 	
-	public function GetTopLevelItem () 
+	public function get_top_level_item () 
 	{
-		return $this->TopLevelItem;
+		return $this->top_level_item;
 	}
 	
 	public function Widget($args, $instance) 
 	{
 
-    	extract($args, EXTR_SKIP);
-
+    	extract( wp_parse_args($args, $this->DefaultOptions), EXTR_SKIP);
+        
+        $instance['container_class'] = 'submenu-widget';
+        $instance['is_gk_submenu'] = 'widget';
+    	
     	$out = $this->Get($instance);
-
-    	if($out && trim($out) !== '<div class="'.$this->Options['container_class'].'"></div>') {
+        
+    	if($out) {
     		 
     		$auto_title = isset($instance['auto_title']) && $instance['auto_title'] ? true : false;
     		
     		$title = '';
-    		if( $auto_title && is_a($this->TopLevelItem, 'StdClass') ) {
-    			
-    			$title = $this->TopLevelItem->title;
+    		if( $auto_title &&  $this->top_level_item) {
+    			$title = $this->top_level_item->title;
     		}
     		else $title = $instance['title'];
        
@@ -80,18 +96,19 @@ Class Gecka_Submenu_Submenu {
 	
 	private function Build($Options = null) 
 	{
+	
+		if( $Options !== null ) $Options = wp_parse_args($Options, $this->Options) ;
+		else $Options = $this->Options;
 		
-		if( $Options !== null ) extract( wp_parse_args($Options, $this->Options) );
-		else extract($this->Options);
+		$Options = wp_parse_args($Options, $this->DefaultOptions);
 		
-		$depth = (int)$depth ? (int)$depth : 0;
+		extract($Options);
+		
+		$depth = (int)$depth;
         $show_description = $show_description ? true : false;
-        $submenu = (int)$submenu;
+        
+        if(isset($child_of)) $submenu = $child_of;
 		
-        if( empty($start_from) ) $start_from = 'top';
-        else if( !in_array( $start_from, array('top', 'current', 'slibling') ) );
-        
-        
 		// if no menu specified, gets the lowest ID menu
 		if(!$menu || !is_nav_menu($menu)) {
 			
@@ -108,188 +125,114 @@ Class Gecka_Submenu_Submenu {
 		// still can't find a menu, we exit
 		if(!$menu || !is_nav_menu($menu)) return;
 		
-		if($auto && $start_from !== 'top') {
-			
-			global $post;
-			if( is_a($post, 'stdClass') && (int)$post->ID ) {
-			
-				if($start_from==='current')
-					$submenu = $post->ID;
-				elseif ($start_from==='slibling')
-					$submenu = $post->post_parent ? $post->post_parent : null;
-				else break;
+		$menu_items = wp_get_nav_menu_items($menu);
+		
+		if(is_tax()) $_type = 'taxonomy';
+		else $_type = 'post_type';
 				
-				if($submenu != 0) $auto = false;
-			}
+		// current page is top level element
+		if( $submenu === 'current' ) {
+		    global $wp_query;
+			$submenu = $this->get_associated_nav_menu_item($wp_query->get_queried_object_id(), &$menu_items, $_type);
 		}
-		
-		// if not in auto mode and no submenu specified, we use the current post
-		// as the top level element
-		if( !$auto && !$submenu ) {
-		    
-		    global $post;
-			if( is_a($post, 'stdClass') && (int)$post->ID ) {
-				$submenu = $post->ID;
-			}
-		    
-		}
-
-		// verify submenu ID, if provided
-		//if( $submenu && ( !is_nav_menu_item($submenu) && !is_page($submenu) ) ) return;
-		$TopLevelElementId = null;
-		$FallbackToPages = false;
-		
+		        
 		// a submenu has been specified
-		if($submenu) {
-		    
-		    $TopLevelElementId = $submenu;
-		    
-		    // it is not a nav menu item, we need to guess if an existing menu item
-		    // points to it
-		    if( !is_nav_menu_item($submenu) ) {
-
-		    	$AssociatedMenuItems = $this->get_associated_nav_menu_items( $submenu , 'post_type',$menu );
+		if( $submenu !== 0 ) {
+       
+            if(!$submenu) return;
+       
+            $submenu_item = $submenu;
+            
+            if( !is_object($submenu) ) {
+                
+                $submenu_item = $this->get_menu_item ($submenu, &$menu_items);
 		        
-		        // no associated menu item found, falling back to wp_list_pages
-		        if( empty($AssociatedMenuItems) ) {
-		        	$FallbackToPages = true;
-		        }
 		        
-		        else $TopLevelElementId = $AssociatedMenuItems[0];
+		        if( !$submenu_item ) $submenu_item = $this->get_associated_nav_menu_item($submenu, &$menu_items, $type);
+                if(!$submenu_item) return;
 		    }
+            
+		    if( !$this->menu_item_has_child($submenu_item->ID, &$menu_items)) return;
+		    
+		    $submenu_id = $submenu_item->ID;
+		    
+		    $this->top_level_item = $submenu_item;
+        
+            global $GKSM_ID, $GKSM_MENUID;
+		    $GKSM_ID = $submenu_id; $GKSM_MENUID = $menu;
 		
 		}
-		
-		// get menu item ancestor for the given or the current post_id in provided menu		
-		if( $auto ) {
-			global $post;
-			
-			if( is_a($post, 'stdClass') && (int)$post->ID ) {
-			 	$TopLevelItem = $this->get_ancestor ($menu, $post->ID);
-			}
-			if( empty($TopLevelItem) ) return;
-			
-		}
-		
-		// builds the submenu
-		$this->TopLevelItem = isset($TopLevelItem) ? $TopLevelItem : wp_setup_nav_menu_item( get_post( $TopLevelElementId ) );
-		
-        if( $FallbackToPages || (isset($this->TopLevelItem->showsub) && $this->TopLevelItem->showsub) ) {
-        	
-        	return '' . wp_page_menu( array('show_home'=>$show_home, 'menu_class' => $container_class, 'submenu', 'echo'=>false, 'title_li'=>'', "depth"=>$depth, "child_of"=>$this->TopLevelItem->object_id) ). '';
-        	
-        }
         
-        // global variable for the filter to use (see filter in gecka-submenu.class.php)
-        global $GKSM_ID, $GKSM_MENUID;
-		$GKSM_ID = $this->TopLevelItem->ID; $GKSM_MENUID = $menu;
+        if(!strpos($container_class, ' ')) {
+            $slug = '';
+            if( !empty($GLOBALS['wp_query']->get_queried_object()->post_name) ) $slug = $GLOBALS['wp_query']->get_queried_object()->post_name;
+            else if( !empty($GLOBALS['wp_query']->get_queried_object()->$slug) ) $slug = $GLOBALS['wp_query']->get_queried_object()->slug;
+            
+            $container_class .= " $container_class-" . $slug ;
         
-		// gets the nav menu
-		$out = wp_nav_menu( array( 'container_class' => $container_class, 'menu'=> $menu, 'fallback_cb'=>'', 'echo'=>false, 'show_description'=> $show_description, "depth"=>$depth ) );
+        }// gets the nav menu
         
-		// reset global variables
+		$args =  array( 'container_class' => $container_class,
+		                 'menu'=> $menu, 
+		                 'show_description'=> $show_description, 
+		                 'depth'=>$depth,
+		                 'is_gk_submenu'=>$is_gk_submenu );
+	
+		$out = wp_nav_menu( wp_parse_args($args, $Options) );
+		
+        // reset global variables
 		$GKSM_ID = $GKSM_MENUID = null;
 			
 		return $out;
 	}
 	
-	/**
+    /**
 	 * Gets a menu item from a list of menu items, avoiding SQL queries
 	 * @param int $item_id id of item to retreive
 	 * @param array $menu_items array of menu items
 	 * @return object $Item a menu item object or false
 	 */
-	private function getMenuItem ($item_id, &$menu_items) 
-	{
-		if(!is_array($menu_items)) return false;
-       foreach($menu_items as $Item) {
+	private function get_menu_item ($item_id, &$menu_items)  {
+	    if(!is_array($menu_items)) return false;
+        foreach($menu_items as $Item) {
             if($Item->ID == $item_id) return $Item;
-       }
-       return false;
-    }
-	
-    /**
-     * Gets the top parent menu item of a given post from a specific menu
-     * @param int $menu menu ID to seach for post
-     * @param int $postID post ID to look for
-     * @return object $Item a menu item object or false
-     */
-	private function get_ancestor ($menu, $postID) 
-	{
-        
-        $MenuItems = wp_get_nav_menu_items($menu);
-       
-        if(!is_page($postID))
-        	$AssociatedMenuItems = $this->get_associated_nav_menu_items( $postID, 'post_type', $menu );
-        else
-        	$AssociatedMenuItems = $this->get_page_associated_nav_menu_items( $postID, 'post_type', $menu );
-        
-        // uses the first associated menu item
-        foreach($AssociatedMenuItems as $associated) {
-        	$Item = $this->getMenuItem($associated, &$MenuItems);
-        	if($Item) break;
         }
-
-        if( !isset($Item) || !$Item ) return;
-        
-        $Ancestror = $Item;
-        while(1) {
-            if($Item->menu_item_parent) {
-                $Item = $this->getMenuItem($Item->menu_item_parent, &$MenuItems);
-                continue;
-            }
-            break;
-        }
-        
-        return $Item;
+        return false;
     }
     
-    function get_associated_nav_menu_items( $object_id = 0, $object_type = 'post_type', $menu_id = 0) {
+    private function menu_item_has_child ($item_id, &$menu_items)  {
+	    if(!is_array($menu_items)) return false;
+        foreach($menu_items as $Item) {
+            if($Item->menu_item_parent == $item_id) return true;
+        }
+        return false;
+    }
+	
+	public function get_associated_nav_menu_item($object_id, &$menu_items, $type='post_type', $offset=0) {
+	
+	    $offset = abs( (int)$offset );
+	
+	    $AssociatedMenuItems = $this->get_associated_nav_menu_items( $object_id, &$menu_items, $type );
+         
+        if( !$num = sizeof($AssociatedMenuItems) ) return false;
+          
+        if($offset>$num) $offset = $num-1;
+         
+        return $AssociatedMenuItems[$offset];
+        
+	}
+    
+    function get_associated_nav_menu_items( $object_id, &$menu_items, $object_type = 'post_type') {
 	    $object_id = (int) $object_id;
-	    $menu_item_ids = array();
+	    $_menu_items = array();
 
-	    if($menu_id)
-	    	$objects = get_objects_in_term( $menu_id, 'nav_menu'  );
-	    
-	    $query = new WP_Query;
-	    $menu_items = $query->query(
-		    array(
-			    'meta_key' => '_menu_item_object_id',
-			    'meta_value' => $object_id,
-			    'post_status' => 'any',
-			    'post_type' => 'nav_menu_item',
-			    'showposts' => -1,
-		    )
-	    );
-	    
-	    foreach( (array) $menu_items as $menu_item ) {
-		    if ( isset( $menu_item->ID ) && is_nav_menu_item( $menu_item->ID ) ) {
-			    if ( get_post_meta( $menu_item->ID, '_menu_item_type', true ) != $object_type )
-				    continue;
+	    foreach( $menu_items as $menu_item ) {
 
-				if( $menu_id && !in_array($menu_item->ID, $objects) ) continue; 
-				    
-			    $menu_item_ids[] = (int) $menu_item->ID;
+            if($menu_item->object_id == $object_id && $menu_item->type === $object_type) {
+			    $_menu_items[] = $menu_item;
 		    }
 	    }
 
-	    return array_unique( $menu_item_ids );  
-    }
-    
-    
-    private function get_page_associated_nav_menu_items( $object_id = 0, $object_type = 'post_type', $menu_id = 0 ) 
-    {
-    	$AssociatedMenuItems = $this->get_associated_nav_menu_items( $object_id, $object_type, $menu_id);
-    	if(!is_page($object_id)) return $AssociatedMenuItems;
-        
-    	$ancestors = array_reverse( get_post_ancestors( $object_id ));
-    		
-    	foreach ($ancestors as $ancestor) {
-    		$AssociatedMenuItems = array_merge( $AssociatedMenuItems, wp_get_associated_nav_menu_items( $ancestor ) );
-    		if(sizeof($AssociatedMenuItems)) break;
-    	}
-    	
-    	return $AssociatedMenuItems;
-    }
-    
+	    return $_menu_items;  
+    }    
 }

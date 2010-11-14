@@ -3,19 +3,18 @@ Contributors: Laurent Dinclaux
 Tags: nav menu, 3.0, submenu, sub-menu, child, child menu, portion of menu, menu portion
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.4.2.1
+Stable tag: 0.5
 
-Provides submenu and autosubmenu widgets, shortcode and template tag for the new wordpress 3.0 menu system.
+Autopupulate nav menu items with sub pages and provides an advanced custom menu widget, along with shortcodes and a template tag for the new wordpress 3.0 menu system.
 
 == Description ==
 
-Provides submenu and autosubmenu widgets, shortcode and template tag
+Autopupulate nav menu items with sub pages and provides an advanced custom menu widget, along with shortcodes and a template tag
 
-The Auto Sub-Menu widget will automatically generate a sub-menu starting from the top parent menu item of currently viewed page.
+For each page menu item you add to any nav menu, you can tell it to autopopulate its child items with its sub pages. It saves a lot of hassle when having a lot of pages.
 
-For the Sub-Menu widget, you select a menu and a child menu item. A sub-menu starting from that child will be generated.
-
-Those do have other options like Showing menu item description, depth, automatically shows the title of the top submenu level...
+The advanced custom menu widget will automatically generate a sub-menu starting from the top parent menu item of currently viewed page, from the currently viewed page or from any defined menu item.
+It has other options like Showing menu item description, depth or automatically showing the title of the top submenu level.
 
 See Installation to for shortcode and template tag details.
 
@@ -24,7 +23,7 @@ See Installation to for shortcode and template tag details.
 1. Upload `gecka-submenu` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
-Now you can use the two provided widgets, the [submenu] shortcode and the 'submenu' template tag action.
+Now you can use the provided widgets, the [submenu] and [menu] shortcode and the 'submenu' template tag action.
 
 The shortcode and template tag options are the same:
 * "menu" : the nav menu ID (mandatory)
@@ -56,6 +55,11 @@ To get the menu item linked to current post, I use the wp_get_associated_nav_men
 3. Autopopulate child pages option
 
 == Changelog ==
+
+= 0.5 =
+* Rewritten the way nav menus get autopopulated with child items
+* Merged the two widgets and added some more options to it
+* Other fixes
 
 = 0.4.2 =
 * More fixes

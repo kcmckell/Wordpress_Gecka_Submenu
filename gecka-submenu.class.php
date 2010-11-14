@@ -16,13 +16,15 @@ class Gecka_Submenu {
 
 		load_plugin_textdomain(self::Domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages');
 		
+		$this->Options = get_option( self::Domain . '_settings');
+		
 		add_action('init', array($this, 'init') );
 		
 		// load widgets
 		add_action('widgets_init', array($this, 'widgetsInit') );
 		
 		// filter to show portions of nav menus
-	    add_filter('wp_get_nav_menu_items', array($this, 'wp_get_nav_menu_items' ), 10, 3);
+	    add_filter('wp_get_nav_menu_items', array($this, 'wp_get_nav_menu_items' ), 15, 3);
 	    
 	    // filter to show the description of menu items if asked
         add_filter('walker_nav_menu_start_el', array($this, 'walker_nav_menu_start_el'), 10, 4);
@@ -30,6 +32,14 @@ class Gecka_Submenu {
 		if( !is_admin() )  {
 			require_once  GKSM_PATH . '/models/Shortcodes.php';
 			new Gecka_Submenu_Shortcodes();
+		}
+		else {
+		
+		    if( get_option( self::Domain . '-pro-notice', '0') == 1 )
+		    add_action('admin_notices', array( $this, 'admin_notices') );
+		    add_action('wp_ajax_gecka_submenu_dismiss_notice', array($this, 'dismiss_notice'));
+            add_action('admin_head', array($this, 'dismiss_notice_js') );
+
 		}
 		
 		// Nav menu hacks
@@ -55,13 +65,8 @@ class Gecka_Submenu {
             return;
         
         // Submenu widget
-        include_once dirname(__FILE__) . '/widgets/Submenu.php';
-        register_widget("GKSM_Widget_Submenu");
-            
-        // Auto submenu widget
-        include_once dirname(__FILE__) . '/widgets/AutoSubmenu.php';
-        register_widget("GKSM_Widget_AutoSubmenu");
-        
+        include_once dirname(__FILE__) . '/widgets/Custom-menu.php';
+        register_widget("GKSM_Widget_Custom_Menu");
         
     }
     
@@ -86,15 +91,18 @@ class Gecka_Submenu {
     public function wp_nav_menu_items_children($item_id, $items) {
     
         $item_list = array();
+    
         foreach ( (array) $items as $item ) {
-            if ( $item->menu_item_parent == $item_id ) 
-            //if ( $item->menu_item_parent == $item_id || $item->ID == $item_id) 
-                $item_list[] = $item;
             if ( $item->menu_item_parent == $item_id ) {  
+          
+                $item_list[] = $item;
+          
                 $children = $this->wp_nav_menu_items_children($item->db_id, $items);
+          
                 if ( $children ) {
                     $item_list = array_merge($item_list, $children);
                 }
+          
             }
         }
         return $item_list;
@@ -110,14 +118,66 @@ class Gecka_Submenu {
      * @return $item_output
      */
     public function walker_nav_menu_start_el ($item_output, $item, $depth, $args) {
+
+        $after_link = '';
+
         if(isset($args->show_description) && $args->show_description) {
-          
-            $desc .= ! empty( $item->description ) ? '<span class="description">'    . esc_html( $item->description        ) .'</span>' : '';
-              
-            if($desc) $item_output = str_replace('</a>', $desc.'</a>', $item_output);
-        
+            $after_link = ! empty( $item->description ) ? '<span class="description">'    . esc_html( $item->description        ) .'</span>' : '';
         }
+        
+        $after_link = apply_filters('nav_menu_item_after_link', $after_link, $item, $args, $depth);
+            
+        $item_output = str_replace('</a>', '</a>'.$after_link, $item_output);
+        
+        
+        $before_link = '';
+        if(isset($args->thumbnail) && $args->thumbnail) {
+          
+            $size = $args->thumbnail;
+            if( strpos($size, ',') ) $size = explode(',',$size);
+        
+            $before_link = get_the_post_thumbnail( $item->object_id, $size );
+            
+        }
+        
+        $before_link = apply_filters('nav_menu_item_before_link', $before_link, $item, $args, $depth);
+       
+        $item_output = str_replace('<a', $before_link.'<a', $item_output);
+        
         return $item_output;
+    }
+    
+    function admin_notices() {
+    
+        echo '<div class="updated" id="gecka_submenu_notice"><div style="float: right; margin-top: 3px"><a href="#" onclick="gecka_submenu_dismiss_notice(); return false;">Dismiss</a></div>';
+        echo '<p>' . __('You are using Gecka Submenu.', self::Domain ) . ' '. __('<a href="http://www.gecka-apps.com" target="_blank">Discover the pro version</a> to get the most out of the Wordpress menu system.', self::Domain ). "</p></div>";
+    }
+    
+    function dismiss_notice () {
+    
+        update_option( 'gecka-submenu-pro-notice', '0');
+        die();
+        
+    }
+    function dismiss_notice_js () {
+        ?>
+        <script type="text/javascript" >
+        jQuery(document).ready(function($) {
+
+            gecka_submenu_dismiss_notice = function () {
+	        var data = {
+		        action: 'gecka_submenu_dismiss_notice'
+	        };
+
+	        // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+	        jQuery.post(ajaxurl, data, function(response) {
+		        $('#gecka_submenu_notice').hide('slow');
+	        });
+	        }
+        });
+        </script>
+        <?php
+
     }
 }
 
@@ -161,7 +221,7 @@ if(!class_exists('Walker_Nav_Menu_DropDown') && is_admin() ) {
             if ( (int)$item->ID === (int)$args['selected'] )
                 $output .= ' selected="selected"';
             $output .= '>';
-            $output .= esc_html($pad . apply_filters( 'the_title', $item->title, $item->term_id ));
+            $output .= esc_html($pad . apply_filters( 'the_title', $item->title ));
 
             $output .= "</option>\n";
         }

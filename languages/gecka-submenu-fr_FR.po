@@ -2,170 +2,161 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gecka Sub-Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-17 14:44+1100\n"
+"POT-Creation-Date: 2010-11-10 15:30+1100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Lox <lox.dev@knc.nc>\n"
+"Last-Translator: Laurent Dinclaux <laurent@gecka.nc>\n"
 "Language-Team: Gecka <contact@gecka.nc>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-SearchPath-0: ..\n"
 
-#: ../widgets/AutoSubmenu.php:13
-msgid "Automatically shows a sub-menu starting from the ancestor menu item of the currently viewed page. "
-msgstr "Affiche automatiquement un sous-menu en commençant par l'élément de menu de premier niveau de la page en cours."
+#: ../gecka-submenu.class.php:153
+msgid "You are using Gecka Submenu."
+msgstr "Vous utilisez Gecka Submenu."
 
-#: ../widgets/AutoSubmenu.php:14
-msgid "Auto Sub-menu"
-msgstr "Sous-menu automatique"
+#: ../gecka-submenu.class.php:153
+msgid "<a href=\"http://www.gecka-apps.com\" target=\"_blank\">Discover the pro version</a> to get the most out of the Wordpress menu system."
+msgstr "<a href=\"http://www.gecka-apps.com\" target=\"_blank\">Découvrez la version pro</a> pour obtenir le maximum du système de menus de Wordpress."
 
-#: ../widgets/AutoSubmenu.php:61
-#: ../widgets/Submenu.php:58
-#, php-format
-msgid "No menus have been created yet. <a href=\"%s\">Create some</a>."
-msgstr ""
-
-#: ../widgets/AutoSubmenu.php:66
-#: ../widgets/Submenu.php:81
-msgid "Title:"
-msgstr ""
-
-#: ../widgets/AutoSubmenu.php:70
-#: ../widgets/Submenu.php:86
-msgid "Use top parent item title"
-msgstr "Utiliser le titre du menu de premier niveau"
-
-#: ../widgets/AutoSubmenu.php:73
-#: ../widgets/Submenu.php:89
-msgid "Select Menu:"
-msgstr ""
-
-#: ../widgets/AutoSubmenu.php:76
-#: ../widgets/Submenu.php:92
-msgid "Select"
-msgstr ""
-
-#: ../widgets/AutoSubmenu.php:84
-msgid "Start menu from:"
-msgstr "Commencer à partir de:"
-
-#: ../widgets/AutoSubmenu.php:88
-msgid "Menu root"
-msgstr "La racine du menu"
-
-#: ../widgets/AutoSubmenu.php:89
-msgid "Current page parent"
-msgstr "De la page parente"
-
-#: ../widgets/AutoSubmenu.php:90
-msgid "Current page"
-msgstr "De la page actuelle"
-
-#: ../widgets/AutoSubmenu.php:100
-#: ../widgets/Submenu.php:112
-msgid "Depth:"
-msgstr "Profondeur:"
-
-#: ../widgets/AutoSubmenu.php:106
-#: ../widgets/Submenu.php:118
-msgid "Show parent item"
-msgstr "Afficher l'élément parent"
-
-#: ../widgets/AutoSubmenu.php:110
-#: ../widgets/Submenu.php:121
-msgid "Show description"
-msgstr "Afficher la description"
-
-#: ../widgets/Submenu.php:12
-msgid "Displays a Sub-Menu"
-msgstr "Affiche un sous-menu"
-
-#: ../widgets/Submenu.php:13
-msgid "Sub-menu"
-msgstr "Sous-menu"
-
-#: ../widgets/Submenu.php:103
-msgid "Select Sub-Menu:"
-msgstr "Sélèctionner l'élément parent"
-
-#: ../widgets/Submenu.php:106
-msgid "Click save first"
-msgstr "Cliquez enregistrer"
-
-#: ../widgets/Submenu.php:140
-#: ../widgets/Submenu.php:149
-msgid "First select a nav menu"
-msgstr "Sélectionner un menu ci-dessus"
-
-#: ../widgets/Submenu.php:156
-msgid "Error: Unknow menu."
-msgstr "Erreur: menu inconnu"
-
-#: ../models/NavMenuHacks.php:126
-msgid "Automatically populate child pages"
+#: ../views/Nav-Menu-Fields.php:6
+msgid "Automaticaly populate with child pages"
 msgstr "Afficher les sous pages automatiquement"
 
-#: ../models/NavMenuHacks.php:208
+#: ../models/NavMenuHacks.php:288
 #, php-format
 msgid "%s (Pending)"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:247
-#: ../models/NavMenuHacks.php:249
+#: ../models/NavMenuHacks.php:327
+#: ../models/NavMenuHacks.php:329
 msgid "Edit Menu Item"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:258
+#: ../models/NavMenuHacks.php:338
 msgid "URL"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:265
+#: ../models/NavMenuHacks.php:345
 msgid "Navigation Label"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:271
+#: ../models/NavMenuHacks.php:351
 msgid "Title Attribute"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:277
+#: ../models/NavMenuHacks.php:357
 msgid "Link Target"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:279
+#: ../models/NavMenuHacks.php:359
 msgid "Same window or tab"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:280
+#: ../models/NavMenuHacks.php:360
 msgid "New window or tab"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:286
+#: ../models/NavMenuHacks.php:366
 msgid "CSS Classes (optional)"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:292
+#: ../models/NavMenuHacks.php:372
 msgid "Link Relationship (XFN)"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:298
-#: ../models/NavMenuHacks.php:305
+#: ../models/NavMenuHacks.php:378
 msgid "Description"
-msgstr "Afficher la description"
+msgstr ""
 
-#: ../models/NavMenuHacks.php:300
-#: ../models/NavMenuHacks.php:307
+#: ../models/NavMenuHacks.php:380
 msgid "The description will be displayed in the menu if the current theme supports it."
 msgstr ""
 
-#: ../models/NavMenuHacks.php:316
+#: ../models/NavMenuHacks.php:389
 #, php-format
 msgid "Original: %s"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:329
+#: ../models/NavMenuHacks.php:402
 msgid "Remove"
 msgstr ""
 
-#: ../models/NavMenuHacks.php:330
+#: ../models/NavMenuHacks.php:403
 msgid "Cancel"
 msgstr ""
+
+#: ../widgets/Custom-menu.php:12
+msgid "Use this widget to add one of your custom menus as a widget."
+msgstr ""
+
+#: ../widgets/Custom-menu.php:13
+msgid "Custom Menu"
+msgstr ""
+
+#: ../widgets/Custom-menu.php:13
+msgid "[advanced]"
+msgstr "[avancé]"
+
+#: ../widgets/Custom-menu.php:76
+#, php-format
+msgid "No menus have been created yet. <a href=\"%s\">Create some</a>."
+msgstr "Aucun menu n'a encore été créét. <a href=\"%s\">An créer un</a>."
+
+#: ../widgets/Custom-menu.php:82
+msgid "Title:"
+msgstr "Titre:"
+
+#: ../widgets/Custom-menu.php:87
+msgid "Use top parent item title"
+msgstr "Utiliser le titre du parent le plus haut"
+
+#: ../widgets/Custom-menu.php:90
+msgid "Select Menu:"
+msgstr "Sélectionnez un menu:"
+
+#: ../widgets/Custom-menu.php:93
+msgid "Select"
+msgstr "Sélectionnez"
+
+#: ../widgets/Custom-menu.php:104
+msgid "Start menu from:"
+msgstr "Commencer le menu à partir"
+
+#: ../widgets/Custom-menu.php:107
+msgid "Click save first"
+msgstr "Veuillez d'abord sauvegarder"
+
+#: ../widgets/Custom-menu.php:113
+msgid "Depth:"
+msgstr "Profondeur:"
+
+#: ../widgets/Custom-menu.php:119
+msgid "Show parent item"
+msgstr "Afficher l'élément parent"
+
+#: ../widgets/Custom-menu.php:122
+msgid "Show description"
+msgstr "Afficher la description"
+
+#: ../widgets/Custom-menu.php:141
+#: ../widgets/Custom-menu.php:150
+msgid "First select a nav menu"
+msgstr "Sélectionnez d'abord un menu"
+
+#: ../widgets/Custom-menu.php:157
+msgid "Error: Unknow menu."
+msgstr "Erreur: menu inconnu."
+
+#: ../widgets/Custom-menu.php:163
+msgid "Nav menu root"
+msgstr "Racine du menu"
+
+#: ../widgets/Custom-menu.php:164
+msgid "Current page"
+msgstr "Page actuelle"
 
