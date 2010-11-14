@@ -2,64 +2,44 @@
 Contributors: Laurent Dinclaux
 Tags: nav menu, 3.0, submenu, sub-menu, child, child menu, portion of menu, menu portion
 Requires at least: 3.0
-Tested up to: 3.0
+Tested up to: 3.0.1
 Stable tag: 0.5
 
-Autopupulate nav menu items with sub pages and provides an advanced custom menu widget, along with shortcodes and a template tag for the new wordpress 3.0 menu system.
+Submenu is a WordPress plug-in that enhances the WordPress 3.x navigation system and allows you to put menus or portion of menus anywhere in your site.
 
 == Description ==
 
-Autopupulate nav menu items with sub pages and provides an advanced custom menu widget, along with shortcodes and a template tag
+Submenu is a WordPress plug-in that enhances the WordPress 3.x navigation system. When you have a website based on WordPress with a lot of pages, but you need a custom menu, it can be tedious to have to add a menu entry for each created page.
 
-For each page menu item you add to any nav menu, you can tell it to autopopulate its child items with its sub pages. It saves a lot of hassle when having a lot of pages.
+Submenu just does it automatically.
 
-The advanced custom menu widget will automatically generate a sub-menu starting from the top parent menu item of currently viewed page, from the currently viewed page or from any defined menu item.
-It has other options like Showing menu item description, depth or automatically showing the title of the top submenu level.
+Submenu also allows you to put menus or portion of menus anywhere in your site: sidebar, templates or page contents.
 
-See Installation to for shortcode and template tag details.
+Languages available: english, french
+
+Check out the [Gecka Submenu video](http://www.youtube.com/watch?v=DHjMfD-k2Mo):
+
+http://www.youtube.com/watch?v=DHjMfD-k2Mo
+
+[Pro](http://gecka-apps.com/wordpress-plugins/gecka-submenu-pro/ "Discover the pro version")
 
 == Installation ==
 
 1. Upload `gecka-submenu` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-
-Now you can use the provided widgets, the [submenu] and [menu] shortcode and the 'submenu' template tag action.
-
-The shortcode and template tag options are the same:
-* "menu" : the nav menu ID (mandatory)
-* "submenu" : the child menu item id to start menu at, will try to guess it using current post if not provided
-* "auto" : automatically generates a submenu starting from the current post menu item's top parent item
-* "show_description" if set to true or 1, will show the menu items description in the <a> tag in a span with 'description' css class
-* "depth" specify the depth of the submenu
-
-Examples:
-[submenu menu=3] : will show a submenu starting from current post/page
-[submenu menu=3 submenu=18] : will show a submenu starting from menu item id 18
-[submenu menu=3 auto=1] : will show a submenu starting from the current post/page menu item's top parent item
-
-do_action('submenu', array( 'menu'=>3, 'depth'=>1);
-do_action('submenu', 'menu=3&submenu=18&show_description=1&depth=2');
-
-== Frequently Asked Questions ==
-
-= What if I have the same page linked to two or more menu items ? =
-
-Well this is where it can cause you problems with auto sub-menu and thus may shows the wrong menu portion. 
-
-To get the menu item linked to current post, I use the wp_get_associated_nav_menu_items() function witch returns all menu items linked to a post/page. So I simply use the first value return and it may not be the menu branch you were expecting. To avoid that, avoid linking the same page to more than one menu item.
+1. [Read the documentation](http://gecka-apps.com/documentation/geka-submenu-pro/)
 
 == Screenshots ==
 
-1. Auto Sub-menu widget
-2. Sub-menu widget
-3. Autopopulate child pages option
+1. Advanced custom menu widget
+2. Autopopulating with child pages
 
 == Changelog ==
 
 = 0.5 =
-* Rewritten the way nav menus get autopopulated with child items
-* Merged the two widgets and added some more options to it
-* Other fixes
+* new and better way to autopopulate menu
+* other fixes
+* new widget
 
 = 0.4.2 =
 * More fixes
