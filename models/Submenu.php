@@ -135,6 +135,17 @@ Class Gecka_Submenu_Submenu {
 		    global $wp_query;
 			$submenu = $this->get_associated_nav_menu_item($wp_query->get_queried_object_id(), &$menu_items, $_type);
 		}
+		// top parent page is the top level element	
+		else if( $submenu === 'top' ) {
+			
+			global $post, $wp_query;
+			
+			if( is_a($post, 'stdClass') && (int)$post->ID ) {
+			 	$submenu = $this->get_top_ancestor ($wp_query->get_queried_object_id(), &$menu_items, $_type);
+			 	$submenu = $submenu->ID;
+			}
+			
+		}
 		        
 		// a submenu has been specified
 		if( $submenu !== 0 ) {
@@ -235,4 +246,28 @@ Class Gecka_Submenu_Submenu {
 
 	    return $_menu_items;  
     }    
+    
+    /**
+     * Gets the top parent menu item of a given post from a specific menu
+     * @param int $menu menu ID to seach for post
+     * @param int $postID post ID to look for
+     * @return object $Item a menu item object or false
+     */
+	private function get_top_ancestor ($postID, &$menu_items, $type='post_type')  {
+        
+        $Item = $this->get_associated_nav_menu_item($postID, &$menu_items, $type);
+        
+        if(!$Item) return;
+        
+        $Ancestror = $Item;
+        while(1) {
+            if($Item->menu_item_parent) {
+                $Item = $this->get_menu_item($Item->menu_item_parent, &$menu_items);
+                continue;
+            }
+            break;
+        }
+        
+        return $Item;
+    }
 }
