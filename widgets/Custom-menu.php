@@ -41,7 +41,7 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
     }
     
     public function update( $new_instance, $old_instance ) {
-        $new_instance = (array) $new_instance;
+        $instance = $old_instance;
         
         $instance['title'] = strip_tags( stripslashes($new_instance['title']) );
         $instance['menu']  = (int) $new_instance['menu'];
@@ -55,6 +55,8 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
         }
         
         $instance['depth'] = (int) $new_instance['depth'];
+        
+        $instance['show_description'] = $new_instance['show_description'];
         
         return $instance;
     }
@@ -118,8 +120,13 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
             <!-- <input class="checkbox" type="checkbox" <?php checked($instance['show_parent'], true) ?> id="<?php echo $this->get_field_id('show_parent'); ?>" name="<?php echo $this->get_field_name('show_parent'); ?>" />
 	        <label for="<?php echo $this->get_field_id('show_parent'); ?>"><?php _e('Show parent item', Gecka_Submenu::Domain); ?></label><br />
 	         -->
-	        <input class="checkbox" type="checkbox" <?php checked($instance['show_description'], true) ?> id="<?php echo $this->get_field_id('show_description'); ?>" name="<?php echo $this->get_field_name('show_description'); ?>" />
-	        <label for="<?php echo $this->get_field_id('show_description'); ?>"><?php _e('Show description', Gecka_Submenu::Domain); ?></label><br />
+	        
+	        <label for="<?php echo $this->get_field_id('show_description'); ?>"><?php _e('Show description', Gecka_Submenu::Domain); ?>:</label><br />
+	        <select name="<?php echo $this->get_field_name('show_description'); ?>" id="<?php echo $this->get_field_id('show_description'); ?>">
+	            <option value="0" <?php selected('0', $instance['show_description']) ?>><?php _e('No'); ?></option>
+	            <option value="into_link" <?php selected('into_link', $instance['show_description']) ?>><?php _e('Into link element', Gecka_Submenu::Domain); ?></option>
+	            <option value="into_li" <?php selected('into_li', $instance['show_description']) ?>><?php _e('Into li element', Gecka_Submenu::Domain); ?></option>
+	        </select>
 	        </p>
         
         <?php 

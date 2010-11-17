@@ -122,12 +122,15 @@ class Gecka_Submenu {
         $after_link = '';
 
         if(isset($args->show_description) && $args->show_description) {
-            $after_link = ! empty( $item->description ) ? '<span class="description">'    . esc_html( $item->description        ) .'</span>' : '';
+            $after_link = !empty( $item->description ) ? '<span class="description">'    . esc_html( $item->description) .'</span>' : '';
         }
         
         $after_link = apply_filters('nav_menu_item_after_link', $after_link, $item, $args, $depth);
             
-        $item_output = str_replace('</a>', '</a>'.$after_link, $item_output);
+        if($args->show_description == 'into_link') $after_link = $after_link . '</a>';
+        else $after_link = '</a>' . $after_link;
+            
+        $item_output = str_replace('</a>', $after_link, $item_output);
         
         
         $before_link = '';

@@ -105,7 +105,6 @@ Class Gecka_Submenu_Submenu {
 		extract($Options);
 		
 		$depth = (int)$depth;
-        $show_description = $show_description ? true : false;
         
         if(isset($child_of)) $submenu = $child_of;
 		
