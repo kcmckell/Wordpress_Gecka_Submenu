@@ -3,7 +3,7 @@ Contributors: Laurent Dinclaux, Gecka
 Tags: nav menu, 3.0, submenu, sub-menu, child, child men
 Requires at least: 3.0
 Tested up to: 3.0.1
-Stable tag: 0.5.2
+Stable tag: 0.5.3
 Donate link: http://gecka-apps.com/wordpress-plugins/gecka-submenu-pro/
 
 Submenu autopopulates any nav menu page item with its children and allows to put menus, or portion of menus, anywhere in your site.
@@ -39,6 +39,12 @@ http://www.youtube.com/watch?v=DHjMfD-k2Mo
 2. Autopopulating with child pages
 
 == Changelog ==
+
+= 0.5.3 =
+* add mennu item description positioning
+* fix template action
+* fix start_from parameter that wasn't used
+
 = 0.5.2 =
 
 * corrected readme file  
