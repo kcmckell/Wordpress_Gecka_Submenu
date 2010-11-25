@@ -6,7 +6,7 @@ class Gecka_Submenu_Shortcodes {
 		
 		add_shortcode( 'submenu', 	array( $this, 'submenu') );
 		add_shortcode( 'menu', 	array( $this, 'menu') );
-        add_action( 'gk-menu', 'gk_menu', 10, 1 );
+        add_action( 'gk-menu', array( $this,'gk_menu'), 10, 1 );
 				
 	}
 	
