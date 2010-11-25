@@ -23,6 +23,7 @@ Class Gecka_Submenu_Submenu {
 	                                    'is_gk_submenu' => true,
 	                                    'submenu' => null,
 									 	'child_of'=> null,
+									 	'start_from'=>null,
 										'type' => 'post_type',
 									 	'title'	=> '',
 									 	'auto_title' => false,
@@ -106,7 +107,8 @@ Class Gecka_Submenu_Submenu {
 		
 		$depth = (int)$depth;
         
-        if(isset($child_of)) $submenu = $child_of;
+        if(isset($child_of) && $child_of)       $submenu = $child_of;
+        if(isset($start_from) && $start_from)   $submenu = $start_from;
 		
 		// if no menu specified, gets the lowest ID menu
 		if(!$menu || !is_nav_menu($menu)) {
