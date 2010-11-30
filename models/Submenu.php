@@ -170,9 +170,9 @@ Class Gecka_Submenu_Submenu {
 		    
 		    $this->top_level_item = $submenu_item;
         
-            global $GKSM_ID, $GKSM_MENUID;
-		    $GKSM_ID = $submenu_id; $GKSM_MENUID = $menu;
-		
+        global $GKSM_ID, $GKSM_MENUID;
+        $menu_object = wp_get_nav_menu_object($menu);
+		    $GKSM_ID = $submenu_id; $GKSM_MENUID = $menu_object->term_id;
 		}
         
         if(!strpos($container_class, ' ')) {
