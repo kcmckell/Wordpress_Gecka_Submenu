@@ -128,7 +128,7 @@ Class Gecka_Submenu_Submenu {
 		
 		$menu_items = wp_get_nav_menu_items($menu);
 		
-		if(is_tax()) $_type = 'taxonomy';
+		if(is_tax() || is_category()) $_type = 'taxonomy';
 		else $_type = 'post_type';
 				
 		// current page is top level element
