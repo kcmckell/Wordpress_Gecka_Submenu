@@ -126,6 +126,19 @@ Class Gecka_Submenu_Submenu {
 		// still can't find a menu, we exit
 		if(!$menu || !is_nav_menu($menu)) return;
 		
+		/* WPML support */
+        if( function_exists('icl_object_id') ) {
+                        
+            global $sitepress;
+                        
+            /* not default language */
+            if(ICL_LANGUAGE_CODE !== $sitepress->get_default_language() ) {
+                $translated_menu_id = icl_object_id($menu, 'nav_menu');
+                $menu = $translated_menu_id ? $translated_menu_id : $menu;
+            }
+        }
+        
+        /* */		
 		$menu_items = wp_get_nav_menu_items($menu);
 		
 		if(is_tax() || is_category()) $_type = 'taxonomy';
