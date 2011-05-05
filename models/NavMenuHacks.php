@@ -44,7 +44,7 @@ class Gecka_Submenu_NavMenuHacks {
                 
                     case 'subpages':
                         
-                        $pages = get_pages(array('child_of' => $item->object_id, 'sort_column' => 'menu_order, post_title'));
+                        $pages = get_pages( apply_filters('gecka-submenu-get_pages', array('child_of' => $item->object_id, 'sort_column' => 'menu_order, post_title')) );
                         
                         $this->setup_posts ('post', &$item, &$pages, &$items, &$order);
                         
