@@ -155,8 +155,8 @@ Class Gecka_Submenu_Submenu {
 			global $post, $wp_query;
 			
 			if( is_a($post, 'stdClass') && (int)$post->ID ) {
-			 	$submenu = $this->get_top_ancestor ($wp_query->get_queried_object_id(), &$menu_items, $_type);
-			 	$submenu = $submenu->ID;
+			 	if( $submenu = $this->get_top_ancestor ($wp_query->get_queried_object_id(), &$menu_items, $_type) ) 
+			 		$submenu = $submenu->ID;
 			}
 			
 		}
@@ -248,7 +248,8 @@ Class Gecka_Submenu_Submenu {
 	}
     
     function get_associated_nav_menu_items( $object_id, &$menu_items, $object_type = 'post_type') {
-	    $object_id = (int) $object_id;
+
+    	$object_id = (int) $object_id;
 	    $_menu_items = array();
 
 	    foreach( $menu_items as $menu_item ) {
@@ -257,9 +258,39 @@ Class Gecka_Submenu_Submenu {
 			    $_menu_items[] = $menu_item;
 		    }
 	    }
-
-	    return $_menu_items;  
+	    
+	    if( !empty($_menu_items) && $object_type !== 'post_type' ) return $_menu_items;
+	    
+	    // no associated 'post_type' menu item found, looking for associated 'taxonomy' menu item
+	    return $this->get_associated_nav_menu_terms_items ( $object_id, &$menu_items );
+    
     }    
+    
+    function get_associated_nav_menu_terms_items ( $object_id, &$menu_items ) {
+    	
+    	$post = get_post($object_id);
+	   
+	    if(!$post) return array();
+	    
+	    $_menu_items 	= array();
+	    $taxonomies 	= get_object_taxonomies($post->post_type);
+	    
+	    
+	    foreach ($taxonomies as $taxonomy) {
+	    	
+	    	if( !$terms = get_the_terms( $object_id, $taxonomy ) ) continue;
+	    	
+	    	foreach ($terms as $term) {
+	    		
+	    		$_menu_items = $this->get_associated_nav_menu_items($term->term_id, &$menu_items, 'taxonomy');
+	    		if( !empty($_menu_items) ) return $_menu_items;
+	    		
+	    	}
+	    }
+ 
+	    return $_menu_items;  
+    	
+    }
     
     /**
      * Gets the top parent menu item of a given post from a specific menu
@@ -285,3 +316,4 @@ Class Gecka_Submenu_Submenu {
         return $Item;
     }
 }
+
