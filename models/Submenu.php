@@ -259,7 +259,7 @@ Class Gecka_Submenu_Submenu {
 		    }
 	    }
 	    
-	    if( !empty($_menu_items) && $object_type !== 'post_type' ) return $_menu_items;
+	    if( !empty($_menu_items) || $object_type !== 'post_type' ) return $_menu_items;
 	    
 	    // no associated 'post_type' menu item found, looking for associated 'taxonomy' menu item
 	    return $this->get_associated_nav_menu_terms_items ( $object_id, &$menu_items );
