@@ -18,13 +18,13 @@ Submenu enhances the WordPress 3.x navigation system. When you have a website ba
 Submenu also allows you to put menus or portion of menus anywhere in your site: sidebar, templates or page contents.
 
 Languages available: english, french  
+
+**Contribute:** [This plugin is on GitHub](https://github.com/Gecka-Apps/Wordpress_Gecka_Submenu) !
   
-Check out the [Gecka Submenu video](http://www.youtube.com/watch?v=DHjMfD-k2Mo):  
+[Discover the pro version](http://gecka-apps.com/wordpress-plugins/gecka-submenu-pro/ "Discover the pro version") by checking out the [Gecka Submenu Pro video](http://www.youtube.com/watch?v=DHjMfD-k2Mo):  
   
 http://www.youtube.com/watch?v=DHjMfD-k2Mo  
   
-[Discover the pro version](http://gecka-apps.com/wordpress-plugins/gecka-submenu-pro/ "Discover the pro version")
-
 == Installation ==
 
 **PHP 5 required. Please be sure to check your PHP version before marking the plugin as broken.**
@@ -32,6 +32,8 @@ http://www.youtube.com/watch?v=DHjMfD-k2Mo
 1.  Upload \`gecka-submenu\` to the \`/wp-content/plugins/\` directory
 1.  Activate the plugin through the 'Plugins' menu in WordPress
 1.  [Read the documentation](http://gecka-apps.com/documentation/geka-submenu-pro/)
+
+**Contribute:** [This plugin is on GitHub](https://github.com/Gecka-Apps/Wordpress_Gecka_Submenu) !
 
 == Screenshots ==
 
@@ -41,9 +43,14 @@ http://www.youtube.com/watch?v=DHjMfD-k2Mo
 == Changelog ==
 
 = 0.6 =
+* shortcodes caching
+* performances improvement
+* fix: show categories submenus when viewing posts or archives
+* WPML support
+* more fixes
 
 = 0.5.3 =
-* add mennu item description positioning
+* add menu item description positioning
 * fix template action
 * fix start_from parameter that wasn't used
 
