@@ -116,8 +116,18 @@ class Gecka_Submenu_NavMenuHacks {
         $_item->type = 'post_type';
         $_item->menu_order = $order;
         $_item->description = $_item->post_excerpt;
-        wp_setup_nav_menu_item($_item);
         
+        $object = get_post_type_object( $post->post_type );
+		$_item->object 		= $object->name;
+		$_item->type_label 	= $object->labels->singular_name;
+        
+        $_item->url = get_permalink( $post->ID );
+        $_item->title = $post->post_title;
+        $_item->target = '';
+        $_item->attr_title = '';
+        $_item->classes = array ( 0 => '');
+        $_item->xfn = '';
+                
         $_item->db_id =  $pseudo_id;
         
         return $_item;
