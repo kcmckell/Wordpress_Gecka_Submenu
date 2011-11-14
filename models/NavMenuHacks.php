@@ -196,8 +196,9 @@ class Gecka_Submenu_NavMenuHacks {
        
     }
     
-    function register_scripts () {    
-       wp_register_style('gecka-submenu-nav-menu-edit', GKSM_URL . '/css/admin-nav-menu-edit.css' );
+    function register_scripts () {
+    	$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
+    	wp_register_style('gecka-submenu-nav-menu-edit', GKSM_URL . "/css/admin-nav-menu-edit$suffix.css", array(), GKSM_VERSION);
     }
     
     function admin_print_styles () {

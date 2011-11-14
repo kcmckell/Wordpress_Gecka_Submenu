@@ -35,6 +35,7 @@ function gksm_activation_check(){
 }
 register_activation_hook(__FILE__, 'gksm_activation_check');
 
+define('GKSM_VERSION' , '0.6' );
 define('GKSM_PATH' , WP_PLUGIN_DIR . "/" . plugin_basename(dirname(__FILE__)) );
 define('GKSM_URL'  , WP_PLUGIN_URL . "/" . plugin_basename(dirname(__FILE__)) );
 
