@@ -3,7 +3,7 @@
     gk_toggle_autopopulate_options = function (id, checked) {
         if( checked ) $('.edit-menu-item-autopopulate-options-'+id).show();
         else $('.edit-menu-item-autopopulate-options-'+id).hide();
-    };
+    }
     
     gk_toggle_autopopulate_posttype_options = function (id) {
     
@@ -14,7 +14,7 @@
         }
     
         
-    };
+    }
     
     gk_autopopulate_posttype_taxonomies = function (id, elem) {
         elem = $(elem);
@@ -22,8 +22,7 @@
                                                              {'action':'gsm_taxonomies_select', 'post_type': elem.val()}, 
                                                              $.proxy( gk_autopopulate_posttype_taxonomies_c, id));  
        
-    };
-    
+    }
     gk_autopopulate_posttype_taxonomies_c = function (responseText, textStatus, xhr) {
         
         if( responseText == '' ) {
@@ -38,7 +37,7 @@
        
        gk_toggle_autopopulate_posttax_options(this, 'input:radio[name=menu-item-autopopulate_posttype_type['+this+']]');
        
-    };
+    }
     
     gk_toggle_autopopulate_posttax_options = function (id, elem) {
         
@@ -52,7 +51,7 @@
             $('.gsm_posts_options-'+id).hide();
         } 
        
-    };
+    }
 
 })(jQuery);
 
