@@ -1,8 +1,8 @@
 === Gecka Submenu ===
 Contributors: Gecka
-Tags: nav menu, 3.0, submenu, sub-menu, child, child men, subpages, subpage, dynamic menu, dynamic subpages, dynamic submenu
+Tags: nav menu, 3.x, submenu, sub-menu, child, child men, subpages, subpage, dynamic menu, dynamic subpages, dynamic submenu
 Requires at least: 3.0
-Tested up to: 3.1
+Tested up to: 3.3
 Stable tag: 0.6
 Donate link: http://gecka-apps.com/wordpress-plugins/gecka-submenu-pro/
 
