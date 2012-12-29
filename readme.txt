@@ -1,9 +1,9 @@
 === Gecka Submenu ===
 Contributors: Gecka
-Tags: nav menu, 3.x, submenu, sub-menu, child, child men, subpages, subpage, dynamic menu, dynamic subpages, dynamic submenu
+Tags: nav menu, 3.0, submenu, sub-menu, child, child men, subpages, subpage, dynamic menu, dynamic subpages, dynamic submenu
 Requires at least: 3.0
-Tested up to: 3.3
-Stable tag: 0.6
+Tested up to: 3.5
+Stable tag: 0.7-beta3
 Donate link: http://gecka-apps.com/wordpress-plugins/gecka-submenu-pro/
 
 Submenu autopopulates any nav menu page item with its children and allows to put menus, or portion of menus, anywhere in your site.
@@ -13,18 +13,18 @@ Submenu autopopulates any nav menu page item with its children and allows to put
 
 **PHP 5 required. Please be sure to check your PHP version before marking the plugin as broken.**
 
-Submenu enhances the WordPress 3.x navigation system. When you have a website based on WordPress with a lot of pages, but you need a custom menu, it can be tedious to have to add a menu entry for each page created. Submenu just does it automatically.  
-  
+Submenu enhances the WordPress 3.x navigation system. When you have a website based on WordPress with a lot of pages, but you need a custom menu, it can be tedious to have to add a menu entry for each page created. Submenu just does it automatically.
+
 Submenu also allows you to put menus or portion of menus anywhere in your site: sidebar, templates or page contents.
 
-Languages available: english, french  
+Languages available: english, french
 
 **Contribute:** [This plugin is on GitHub](https://github.com/Gecka-Apps/Wordpress_Gecka_Submenu) !
-  
-[Discover the pro version](http://gecka-apps.com/wordpress-plugins/gecka-submenu-pro/ "Discover the pro version") by checking out the [Gecka Submenu Pro video](http://www.youtube.com/watch?v=DHjMfD-k2Mo):  
-  
-http://www.youtube.com/watch?v=DHjMfD-k2Mo  
-  
+
+[Discover the pro version](http://gecka-apps.com/wordpress-plugins/gecka-submenu-pro/ "Discover the pro version") by checking out the [Gecka Submenu Pro video](http://www.youtube.com/watch?v=DHjMfD-k2Mo):
+
+http://www.youtube.com/watch?v=DHjMfD-k2Mo
+
 == Installation ==
 
 **PHP 5 required. Please be sure to check your PHP version before marking the plugin as broken.**
@@ -42,6 +42,13 @@ http://www.youtube.com/watch?v=DHjMfD-k2Mo
 
 == Changelog ==
 
+= 0.7 =
+* performances enhancements
+* better widget with specific class support
+* added a gk_submenu_widget_fallback action to use to display custom content
+  when the widget has no menu entries to display
+* Wordpress 3.5 compatibility
+
 = 0.6 =
 * shortcodes caching
 * performances improvement
@@ -55,12 +62,10 @@ http://www.youtube.com/watch?v=DHjMfD-k2Mo
 * fix start_from parameter that wasn't used
 
 = 0.5.2 =
-
 * corrected readme file  
 * added the start from "Top parent element" option to the widget
 
 = 0.5.1 =
-
 * bug fix
 
 = 0.5 =  
@@ -70,21 +75,21 @@ http://www.youtube.com/watch?v=DHjMfD-k2Mo
   
 = 0.4.2 =  
 * More fixes  
-* Menu parameter is no more mandatory, gets the lowest ID menu if not set   
-  
-= 0.4.1 =  
-* Fixed bug in submenu builder  
-  
-= 0.4 =  
-* Fixed some notice errors  
-* Experimental functionnality to autopopulate a page menu item with its subpages for WP 3.0 nav menu system  
-  
-= 0.3 =  
-* Added template tag and shortcode support  
-  
-= 0.2 =  
-* Bugs fixes  
-* Localization support (French added).  
-  
-= 0.1 =  
+* Menu parameter is no more mandatory, gets the lowest ID menu if not set  
+
+= 0.4.1 =
+* Fixed bug in submenu builder
+
+= 0.4 =
+* Fixed some notice errors
+* Experimental functionnality to autopopulate a page menu item with its subpages for WP 3.0 nav menu system
+
+= 0.3 =
+* Added template tag and shortcode support
+
+= 0.2 =
+* Bugs fixes
+* Localization support (French added).
+
+= 0.1 =
 * First version.

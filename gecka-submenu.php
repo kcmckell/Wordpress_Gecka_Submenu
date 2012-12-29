@@ -3,13 +3,13 @@
 Plugin Name: Gecka Submenu
 Plugin URI: http://gecka-apps.com/wordpress-plugins/geka-submenu/
 Description: Enhances the worpdress nav menu system, autopopulate with children pages
-Version: 0.6
+Version: 0.7-beta3
 Author: Gecka Apps
 Author URI: http://gecka-apps.com
 Licence: GPL2
 */
 
-/* Copyright 2010  Gecka SARL (email: contact@gecka.nc). All rights reserved
+/* Copyright 2010-2012  Gecka SARL (email: contact@gecka.nc). All rights reserved
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -25,31 +25,31 @@ Licence: GPL2
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-// require PHP 5
+define('GKSM_PATH' , WP_PLUGIN_DIR . "/" . plugin_basename(dirname(__FILE__)) );
+define('GKSM_URL'  , WP_PLUGIN_URL . "/" . plugin_basename(dirname(__FILE__)) );
+
+define('GKSM_VERSION', '0.7-beta3');
+
+// requires PHP 5
 function gksm_activation_check(){
 	if (version_compare(PHP_VERSION, '5.0.0', '<')) {
 		deactivate_plugins( basename(dirname(__FILE__)) . '/' . basename(__FILE__) ); // Deactivate ourself
 		wp_die("Sorry, Gecka Submenu requires PHP 5 or higher. Ask your host how to enable PHP 5 as the default on your servers.");
 	}
-	update_option( 'gecka-submenu-pro-notice', '1');
+    update_option( 'gecka-submenu-pro-notice', '1');
 }
 register_activation_hook(__FILE__, 'gksm_activation_check');
 
-define('GKSM_VERSION' , '0.6' );
-define('GKSM_PATH' , WP_PLUGIN_DIR . "/" . plugin_basename(dirname(__FILE__)) );
-define('GKSM_URL'  , WP_PLUGIN_URL . "/" . plugin_basename(dirname(__FILE__)) );
-
-//needed global vars for widget usage
+// needed global vars for widget usage (hugly hack...)
 $GKSM_ID = $GKSM_MENUID = null;
 
 require GKSM_PATH . '/gecka-submenu.class.php';
 
-// Instantiate the class
 if (class_exists('Gecka_Submenu')) {
     if (!isset($GkSm)) {
         
     	include GKSM_PATH . '/models/Submenu.php';
     	$GkSm = new Gecka_Submenu();
-        
+    
     }
 }

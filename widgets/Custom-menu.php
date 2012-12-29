@@ -6,9 +6,8 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
 	                                    'auto_title'=>0, 
 	                                    'show_parent'=>0,
 	                                    'show_description'=>0, 
-										'class'=>'',
-										'thumbnail'=>'',
-	                                     );
+										'class'=>''
+	                                  );
 	
 	public function GKSM_Widget_Custom_Menu () {
 		
@@ -19,7 +18,7 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
 	    // ajax select update
 	    add_action('wp_ajax_gksm_update', array($this, 'submenuOptionsAjax'));
 	    
-	    // needed javasccript & css for widget admin
+	    // needed javasccript & css for widget admin      
 	    $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
 	    
 	    wp_register_script('gecka-submenu-widget-custom-menu', GKSM_URL . "/javascripts/widget-custom-menu$suffix.js", array('jquery'), GKSM_VERSION );
@@ -28,7 +27,7 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
         add_action( "admin_print_scripts-widgets.php", array($this, 'admin_print_scripts') );
         
         add_filter( 'dynamic_sidebar_params', array($this, 'dynamic_sidebar_params') );
-	    
+        
     }
     
     public function admin_print_scripts () {
@@ -62,11 +61,9 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
                 $instance[$field] = 1;
         }
         
-        $instance['depth'] = (int) $new_instance['depth'];
-        
         $instance['show_description'] 	= $new_instance['show_description'];
         $instance['class'] 				= $new_instance['class'];
-        $instance['thumbnail'] 	= $new_instance['thumbnail'];
+        $instance['depth'] 				= (int) $new_instance['depth'];
         
         return $instance;
     }
@@ -80,8 +77,7 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
         $submenu   = isset( $instance['submenu'] ) ? $instance['submenu'] : '0';
         $depth     = isset( $instance['depth'] ) ? $instance['depth'] : 0;
         $class     = isset( $instance['class'] ) ? $instance['class'] : 0;
-        $thumbnail = isset( $instance['thumbnail'] ) ? $instance['thumbnail'] : '';
-        
+
          // Get menus
         $menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
@@ -132,7 +128,6 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
             <!-- <input class="checkbox" type="checkbox" <?php checked($instance['show_parent'], true) ?> id="<?php echo $this->get_field_id('show_parent'); ?>" name="<?php echo $this->get_field_name('show_parent'); ?>" />
 	        <label for="<?php echo $this->get_field_id('show_parent'); ?>"><?php _e('Show parent item', Gecka_Submenu::Domain); ?></label><br />
 	         -->
-	        
 	        <label for="<?php echo $this->get_field_id('show_description'); ?>"><?php _e('Show description', Gecka_Submenu::Domain); ?>:</label><br />
 	        <select name="<?php echo $this->get_field_name('show_description'); ?>" id="<?php echo $this->get_field_id('show_description'); ?>">
 	            <option value="0" <?php selected('0', $instance['show_description']) ?>><?php _e('No'); ?></option>
@@ -145,11 +140,9 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
             </p>
             
             <p class="description-thin">         
-            <label for="<?php echo $this->get_field_id('thumbnail'); ?>"><?php _e('Thumbnail:', Gecka_Submenu::Domain); ?>:</label><br />
-	        <input class="widefat" id="<?php echo $this->get_field_id('thumbnail'); ?>" name="<?php echo $this->get_field_name('thumbnail'); ?>" type="text" value="<?php echo $thumbnail; ?>" placeholder="<?php _e('The thumbnail.', Gecka_Submenu::Domain); ?>" />
-            
-	        </p>
-        	</div>
+            </p>
+	        </div>
+        
         <?php 
     }
 	
@@ -196,46 +189,46 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
         return $options;
         
     }
-    
+	
     public function dynamic_sidebar_params($params) {
     	global $wp_registered_sidebars, $wp_registered_widgets;
     
     	$widget_id = $params[0]['widget_id'];
     	$widget = $wp_registered_widgets[$widget_id];
-	
+    
     	// is our widget
-    	if( !empty($widget['callback']) && is_array($widget['callback']) 
-    		&& $widget['callback'][0] instanceof GKSM_Widget_Custom_Menu ) {
-    		
+    	if( !empty($widget['callback']) && is_array($widget['callback'])
+    			&& $widget['callback'][0] instanceof GKSM_Widget_Custom_Menu ) {
+    
     		//get widget instance
     		$instance = $widget['callback'][0]->get_settings();
-    		
+    
     		if (! array_key_exists($params[1]['number'], $instance)) {
-				return $params;
-			}
-			
-			$instance = $instance[$params[1]['number']];
+    			return $params;
+    		}
+    
+    		$instance = $instance[$params[1]['number']];
     		if( empty($instance['class']) ) return $params;
-    		
+    
     		$class = $instance['class'];
-    		    		
-	        // from wp-includes/widgets.php
-			$classname_ = '';
-			foreach ( (array) $widget['classname'] as $cn ) {
-				if ( is_string($cn) )
-					$classname_ .= '_' . $cn;
-				elseif ( is_object($cn) )
-					$classname_ .= '_' . get_class($cn);
-			}
-			$classname_ = ltrim($classname_, '_');
-
-			// we add our class
-			$classname_ .= ' ' . $class;
-			
-			$before_widget = $wp_registered_sidebars[$params[0]['id']]['before_widget'];
-			$params[0]['before_widget'] = sprintf($before_widget, $widget['id'], $classname_);
+    
+    		// from wp-includes/widgets.php
+    		$classname_ = '';
+    		foreach ( (array) $widget['classname'] as $cn ) {
+    			if ( is_string($cn) )
+    				$classname_ .= '_' . $cn;
+    			elseif ( is_object($cn) )
+    			$classname_ .= '_' . get_class($cn);
+    		}
+    		$classname_ = ltrim($classname_, '_');
+    
+    		// we add our class
+    		$classname_ .= ' ' . $class;
+    
+    		$before_widget = $wp_registered_sidebars[$params[0]['id']]['before_widget'];
+    		$params[0]['before_widget'] = sprintf($before_widget, $widget['id'], $classname_);
     	}
-    	
+    
     	return $params;
-    }
+    }	
 }

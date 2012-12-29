@@ -1,7 +1,15 @@
 <?php
+
 /**
- * How custom nav menu edit walker, only there to add the wp_nav_menu_item_custom_fields action hook we need
+ * Create HTML list of nav menu input items.
+ *
+ * @package WordPress
+ * @since 3.0.0
+ * @uses Walker_Nav_Menu
  */
+ 
+
+//require_once  'wp-admin/includes/nav-menu.php';
 if( version_compare($GLOBALS['wp_version'], '3.3-beta') === -1) {
 	
 	class Gecka_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit  {

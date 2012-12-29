@@ -1,1 +1,57 @@
-(function(a){gk_toggle_autopopulate_options=function(c,b){if(b){a(".edit-menu-item-autopopulate-options-"+c).show()}else{a(".edit-menu-item-autopopulate-options-"+c).hide()}};gk_toggle_autopopulate_posttype_options=function(c){var b=a("#edit-menu-item-autopopulate_type-"+c+"-posttype:checked").val();if(b=="posttype"){a(".edit-menu-item-autopopulate-posttype-options-"+c).show();gk_autopopulate_posttype_taxonomies(c,a("#edit-menu-item-autopopulate_posttype-"+c))}};gk_autopopulate_posttype_taxonomies=function(c,b){b=a(b);a("#edit-menu-item-autopopulate_taxonomy-"+c).load(ajaxurl,{action:"gsm_taxonomies_select",post_type:b.val()},a.proxy(gk_autopopulate_posttype_taxonomies_c,c))};gk_autopopulate_posttype_taxonomies_c=function(b,d,c){if(b==""){a("#edit-menu-item-autopopulate_posttype_type-"+this+"-taxonomies").attr("disabled","disabled");a("input:radio[id=edit-menu-item-autopopulate_posttype_type-"+this+"-posts]").attr("checked","checked")}else{a("#edit-menu-item-autopopulate_posttype_type-"+this+"-taxonomies").removeAttr("disabled")}gk_toggle_autopopulate_posttax_options(this,"input:radio[name=menu-item-autopopulate_posttype_type["+this+"]]")};gk_toggle_autopopulate_posttax_options=function(c,b){b=a(b);if(b.val()=="posts"){a(".gsm_taxonomies_options-"+c).hide();a(".gsm_posts_options-"+c).show()}else{if(b.val()=="taxonomies"){a(".gsm_taxonomies_options-"+c).show();a(".gsm_posts_options-"+c).hide()}}}})(jQuery);
+(function($) {
+
+    gk_toggle_autopopulate_options = function (id, checked) {
+        if( checked ) $('.edit-menu-item-autopopulate-options-'+id).show();
+        else $('.edit-menu-item-autopopulate-options-'+id).hide();
+    }
+    
+    gk_toggle_autopopulate_posttype_options = function (id) {
+    
+        var value = $('#edit-menu-item-autopopulate_type-'+id+'-posttype:checked').val();
+        if(value=='posttype') {
+           $('.edit-menu-item-autopopulate-posttype-options-'+id).show();
+           gk_autopopulate_posttype_taxonomies (id, $('#edit-menu-item-autopopulate_posttype-'+id));
+        }
+    
+        
+    }
+    
+    gk_autopopulate_posttype_taxonomies = function (id, elem) {
+        elem = $(elem);
+        $('#edit-menu-item-autopopulate_taxonomy-'+id).load( ajaxurl, 
+                                                             {'action':'gsm_taxonomies_select', 'post_type': elem.val()}, 
+                                                             $.proxy( gk_autopopulate_posttype_taxonomies_c, id));  
+       
+    }
+    gk_autopopulate_posttype_taxonomies_c = function (responseText, textStatus, xhr) {
+        
+        if( responseText == '' ) {
+           
+            $('#edit-menu-item-autopopulate_posttype_type-'+this+'-taxonomies').attr("disabled", "disabled");     
+         
+            $('input:radio[id=edit-menu-item-autopopulate_posttype_type-'+this+'-posts]').attr("checked", "checked");
+           
+            
+        }
+        else $('#edit-menu-item-autopopulate_posttype_type-'+this+'-taxonomies').removeAttr("disabled");
+       
+       gk_toggle_autopopulate_posttax_options(this, 'input:radio[name=menu-item-autopopulate_posttype_type['+this+']]');
+       
+    }
+    
+    gk_toggle_autopopulate_posttax_options = function (id, elem) {
+        
+        elem = $(elem);
+        if(elem.val() == 'posts') {
+            $('.gsm_taxonomies_options-'+id).hide();
+            $('.gsm_posts_options-'+id).show();
+        }
+        else if(elem.val() == 'taxonomies') {
+            $('.gsm_taxonomies_options-'+id).show();
+            $('.gsm_posts_options-'+id).hide();
+        } 
+       
+    }
+
+})(jQuery);
+
