@@ -184,7 +184,7 @@ class GKSM_Widget_Custom_Menu extends WP_Widget {
         $options = '<option value="0">' . __('Nav menu root', Gecka_Submenu::Domain) .'</option>';
         $options .= '<option value="current"'.selected('current', $default).'>' . __('Current page', Gecka_Submenu::Domain) .'</option>';
         $options .= '<option value="top"'.selected('top', $default).'>' . __('Current page\'s top parent', Gecka_Submenu::Domain) .'</option>';
-        $options .= call_user_func_array( array(&$walker, 'walk'), $args );  
+        $options .= call_user_func_array( array($walker, 'walk'), $args );  
         
         return $options;
         
